@@ -4,6 +4,8 @@ A searchable UI motion vocabulary reference — 186 patterns across 19 categorie
 
 ![Static Badge](https://img.shields.io/badge/motions-186-6366f1) ![Static Badge](https://img.shields.io/badge/categories-19-64748b) ![Static Badge](https://img.shields.io/badge/stack-HTML%20%2F%20CSS%20%2F%20JS-0f172a)
 
+![Motion Catalog screenshot](assets/screenshot.png)
+
 ## Overview
 
 Stop saying "make it feel smooth" and start using precise motion vocabulary.
