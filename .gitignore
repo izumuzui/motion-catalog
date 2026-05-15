@@ -1,0 +1,17 @@
+# Dependencies (used only for GIF generation scripts)
+node_modules/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# GIF generation scripts (dev tooling, not part of the catalog)
+generate_gifs.js
+capture-gifs.js
+package.json
+package-lock.json
+
+# Temporary
+*.log
+/tmp/
