@@ -18,6 +18,24 @@ const categories = [
   'Input','Cursor','Menu','Media','Data','Visual',
 ]
 
+const useCases = [
+  { id: 'page-swipe', label: 'ページ遷移 / スワイプ', short: 'Page swipe' },
+  { id: 'button-click', label: 'ボタンクリック', short: 'Button click' },
+  { id: 'notification', label: '通知 / トースト', short: 'Notification' },
+  { id: 'form-input', label: 'フォーム入力', short: 'Form input' },
+  { id: 'loading', label: '待機 / 生成中', short: 'Loading' },
+  { id: 'list-work', label: '一覧操作', short: 'List work' },
+  { id: 'modal-drawer', label: 'モーダル / ドロワー', short: 'Modal drawer' },
+  { id: 'nav-tab', label: 'タブ / ナビ', short: 'Tabs nav' },
+  { id: 'card-media', label: 'カード / 画像', short: 'Card media' },
+  { id: 'data-viz', label: 'グラフ / 数値', short: 'Data viz' },
+  { id: 'success-error', label: '成功 / エラー', short: 'Status' },
+  { id: 'hover-cursor', label: 'ホバー / カーソル', short: 'Hover cursor' },
+  { id: 'scroll', label: 'スクロール連動', short: 'Scroll' },
+  { id: 'text', label: 'テキスト表示', short: 'Text' },
+  { id: 'menu', label: 'メニュー展開', short: 'Menu' },
+]
+
 const motions = [
   ['Fade In','フェードイン','Entrance','新しいカード、補助テキスト、空状態','この要素はフェードインで自然に表示して','fade-in','block'],
   ['Fade Up','フェードアップ','Entrance','一覧カード、モーダル、ページ冒頭','下から少しフェードアップして出して','fade-up','block'],
@@ -209,8 +227,13 @@ const motions = [
   ({ name, jpName, category, useFor, request, className, preview })
 )
 
+motions.forEach(motion => {
+  motion.useCases = deriveUseCases(motion)
+})
+
 /* ── State ──────────────────────────────────────────────────── */
 let activeCategory = 'All'
+let activeUseCase = 'All'
 let replayKey = 0
 let motionForced = false
 
@@ -218,6 +241,7 @@ let motionForced = false
 const grid          = document.getElementById('catalogGrid')
 const searchInput   = document.getElementById('searchInput')
 const filtersEl     = document.getElementById('categoryFilters')
+const useCaseEl     = document.getElementById('useCaseFilters')
 const replayAllBtn  = document.getElementById('replayAll')
 const summaryStrip  = document.getElementById('summaryStrip')
 const toastEl       = document.getElementById('toast')
@@ -257,6 +281,93 @@ function showToast(msg) {
   toastEl.classList.add('is-visible')
   clearTimeout(toastTimer)
   toastTimer = setTimeout(() => toastEl.classList.remove('is-visible'), 2000)
+}
+
+function motionText(motion) {
+  return `${motion.name} ${motion.jpName} ${motion.category} ${motion.useFor} ${motion.request} ${motion.className}`.toLowerCase()
+}
+
+function hasAny(text, words) {
+  return words.some(word => text.includes(word.toLowerCase()))
+}
+
+function deriveUseCases(motion) {
+  const text = motionText(motion)
+  const tags = new Set()
+
+  if (
+    motion.category === 'Navigation' ||
+    hasAny(text, ['swipe', 'スワイプ', 'page', 'ページ', 'shared axis', '共有軸', 'slide', 'カルーセル', 'carousel', 'drawer', 'bottom sheet'])
+  ) tags.add('page-swipe')
+
+  if (
+    motion.category === 'Button' ||
+    hasAny(text, ['button', 'ボタン', 'click', 'クリック', 'tap', 'タップ', 'press', 'プレス', 'copy', 'コピー', 'confirm', '確認', 'favorite', 'お気に入り', 'download', 'ダウンロード'])
+  ) tags.add('button-click')
+
+  if (
+    hasAny(text, ['toast', 'トースト', 'notification', '通知', 'badge', 'バッジ', 'warning', '警告', 'ping', 'ピング', 'flash', 'フラッシュ', 'blink', 'ブリンク', 'ライブ状態', '新着'])
+  ) tags.add('notification')
+
+  if (
+    motion.category === 'Input' ||
+    hasAny(text, ['input', '入力', 'form', 'フォーム', 'field', 'フィールド', 'label', 'ラベル', 'validation', '検証', 'password', 'パスワード', 'checkbox', 'radio', 'switch'])
+  ) tags.add('form-input')
+
+  if (
+    motion.category === 'Loading' ||
+    hasAny(text, ['loading', 'ローディング', 'loader', 'ローダー', 'spinner', 'スピナー', 'progress', '進捗', 'skeleton', 'スケルトン', '生成中', '同期中', '待機', '処理中'])
+  ) tags.add('loading')
+
+  if (
+    motion.category === 'List' ||
+    hasAny(text, ['list', '一覧', 'row', '行', 'insert', '挿入', 'remove', '削除', 'reorder', '並べ替え', 'sort', 'ソート', 'filter', '絞り込み', '検索結果'])
+  ) tags.add('list-work')
+
+  if (
+    hasAny(text, ['modal', 'モーダル', 'dialog', 'ダイアログ', 'drawer', 'ドロワー', 'sheet', 'シート', 'backdrop', '確認', '詳細表示'])
+  ) tags.add('modal-drawer')
+
+  if (
+    hasAny(text, ['tab', 'タブ', 'nav', 'ナビ', 'menu', 'メニュー', 'breadcrumb', 'パンくず', 'accordion', 'アコーディオン', 'underline', 'リンク'])
+  ) tags.add('nav-tab')
+
+  if (
+    motion.category === 'Media' ||
+    hasAny(text, ['card', 'カード', 'image', '画像', 'photo', '写真', 'video', '動画', 'media', 'gallery', 'ギャラリー', 'thumbnail', 'サムネ', 'zoom', 'ズーム'])
+  ) tags.add('card-media')
+
+  if (
+    motion.category === 'Data' ||
+    hasAny(text, ['chart', 'グラフ', 'data', '数値', 'count', 'カウント', 'gauge', 'ゲージ', 'heatmap', 'ヒートマップ', 'dashboard', '分析', '売上', '価格'])
+  ) tags.add('data-viz')
+
+  if (
+    hasAny(text, ['success', '成功', 'error', 'エラー', 'check', 'チェック', 'x', '失敗', '削除不可', '検証', 'shake', 'シェイク', 'deny', '拒否', '完了'])
+  ) tags.add('success-error')
+
+  if (
+    motion.category === 'Cursor' ||
+    hasAny(text, ['hover', 'ホバー', 'cursor', 'カーソル', 'magnetic', 'マグネティック', 'tilt', 'チルト', 'lift', 'リフト', 'tooltip', 'ツールチップ'])
+  ) tags.add('hover-cursor')
+
+  if (
+    motion.category === 'Scroll' ||
+    hasAny(text, ['scroll', 'スクロール', 'parallax', 'パララックス', 'sticky', 'スティッキー', 'ken burns'])
+  ) tags.add('scroll')
+
+  if (
+    motion.category === 'Text' ||
+    hasAny(text, ['text', 'テキスト', 'typewriter', 'タイプライター', 'letter', '文字', 'word', '単語', 'scramble', 'ticker'])
+  ) tags.add('text')
+
+  if (
+    motion.category === 'Menu' ||
+    hasAny(text, ['menu', 'メニュー', 'palette', 'パレット', 'radial', 'ラジアル', 'fab', 'tooltip', 'ツールチップ'])
+  ) tags.add('menu')
+
+  if (!tags.size) tags.add('card-media')
+  return [...tags]
 }
 
 /* ── Clipboard copy ─────────────────────────────────────────── */
@@ -414,12 +525,32 @@ function renderPreview(motion) {
 }
 
 /* ── Filters ────────────────────────────────────────────────── */
+function matchesCategory(motion, category = activeCategory) {
+  return category === 'All' || motion.category === category
+}
+
+function matchesUseCase(motion, useCase = activeUseCase) {
+  return useCase === 'All' || motion.useCases.includes(useCase)
+}
+
+function matchesSearch(motion, query) {
+  if (!query) return true
+  const useCaseLabels = motion.useCases
+    .map(id => {
+      const hit = useCases.find(item => item.id === id)
+      return hit ? `${hit.label} ${hit.short}` : ''
+    })
+    .join(' ')
+  const haystack = `${motion.name} ${motion.jpName} ${motion.category} ${motion.useFor} ${motion.request} ${motion.className} ${useCaseLabels}`.toLowerCase()
+  return haystack.includes(query)
+}
+
 function createFilters() {
   const allCategories = ['All', ...categories]
   filtersEl.innerHTML = allCategories.map(cat => {
     const count = cat === 'All'
-      ? motions.length
-      : motions.filter(m => m.category === cat).length
+      ? motions.filter(m => matchesUseCase(m)).length
+      : motions.filter(m => matchesCategory(m, cat) && matchesUseCase(m)).length
     const isActive = cat === activeCategory
     return `<button
       class="filter-button"
@@ -432,10 +563,29 @@ function createFilters() {
   }).join('')
 }
 
+function createUseCaseFilters() {
+  const allUseCases = [{ id: 'All', label: 'All', short: 'All' }, ...useCases]
+  useCaseEl.innerHTML = allUseCases.map(item => {
+    const count = item.id === 'All'
+      ? motions.filter(m => matchesCategory(m)).length
+      : motions.filter(m => matchesUseCase(m, item.id) && matchesCategory(m)).length
+    const isActive = item.id === activeUseCase
+    return `<button
+      class="filter-button filter-button--usecase"
+      data-use-case="${item.id}"
+      type="button"
+      role="tab"
+      aria-pressed="${isActive}"
+      aria-selected="${isActive}"
+      title="${item.short}"
+    >${item.label}<span class="count">${count}</span></button>`
+  }).join('')
+}
+
 /* ── Summary (Table of Contents) ────────────────────────────── */
 function createSummary() {
   summaryStrip.innerHTML = categories.map(cat => {
-    const count = motions.filter(m => m.category === cat).length
+    const count = motions.filter(m => m.category === cat && matchesUseCase(m)).length
     return `<button type="button" data-category="${cat}" class="contents-card">
       <strong>${count}</strong>
       <span>${cat}</span>
@@ -447,11 +597,7 @@ function createSummary() {
 function renderCatalog() {
   const query = searchInput.value.trim().toLowerCase()
   const filtered = motions.filter(motion => {
-    const catMatch = activeCategory === 'All' || motion.category === activeCategory
-    if (!catMatch) return false
-    if (!query) return true
-    const haystack = `${motion.name} ${motion.jpName} ${motion.category} ${motion.useFor} ${motion.request}`.toLowerCase()
-    return haystack.includes(query)
+    return matchesCategory(motion) && matchesUseCase(motion) && matchesSearch(motion, query)
   })
 
   totalCount.textContent = filtered.length
@@ -529,6 +675,18 @@ filtersEl.addEventListener('click', e => {
   if (!btn) return
   activeCategory = btn.dataset.category
   createFilters()
+  createUseCaseFilters()
+  createSummary()
+  renderCatalog()
+})
+
+useCaseEl.addEventListener('click', e => {
+  const btn = e.target.closest('button[data-use-case]')
+  if (!btn) return
+  activeUseCase = btn.dataset.useCase
+  createFilters()
+  createUseCaseFilters()
+  createSummary()
   renderCatalog()
 })
 
@@ -538,6 +696,8 @@ summaryStrip.addEventListener('click', e => {
   if (!btn) return
   activeCategory = btn.dataset.category
   createFilters()
+  createUseCaseFilters()
+  createSummary()
   renderCatalog()
   window.scrollTo({ top: 0, behavior: 'smooth' })
 })
@@ -550,5 +710,6 @@ replayAllBtn.addEventListener('click', () => {
 
 /* ── Init ───────────────────────────────────────────────────── */
 createFilters()
+createUseCaseFilters()
 createSummary()
 renderCatalog()

@@ -63,11 +63,18 @@
               id="searchInput"
               class="search-input"
               type="search"
-              placeholder="fade, toast, ローディング, hover, シェイク…"
+              placeholder="ページスワイプ, ボタンクリック, 通知, fade, hover…"
               autocomplete="off"
             />
           </div>
-          <div class="filter-row" id="categoryFilters" role="tablist" aria-label="カテゴリ"></div>
+          <div class="filter-section" aria-label="カテゴリで絞り込み">
+            <div class="filter-section__label">Motion type</div>
+            <div class="filter-row" id="categoryFilters" role="tablist" aria-label="カテゴリ"></div>
+          </div>
+          <div class="filter-section" aria-label="実ユースケースで絞り込み">
+            <div class="filter-section__label">UI use case</div>
+            <div class="filter-row filter-row--usecase" id="useCaseFilters" role="tablist" aria-label="実ユースケース"></div>
+          </div>
         </div>
       </div>
 

@@ -11,7 +11,7 @@ A searchable UI motion vocabulary reference — 186 patterns across 19 categorie
 Stop saying "make it feel smooth" and start using precise motion vocabulary.
 
 Each card in the catalog shows:
-- **Live preview** — the animation plays in-browser
+- **Live preview** — motion previews are drawn with HTML/CSS, no embedded GIFs
 - **Use cases** — where to apply the pattern
 - **Request text** — copy a ready-made prompt to use with designers or AI
 
@@ -28,6 +28,7 @@ python3 -m http.server 4177 --bind 127.0.0.1
 
 - **Search** — filter by name, Japanese name, or use case
 - **Category filters** — narrow down by motion type
+- **Use-case filters** — find motions by real UI situations such as page swipe, button click, notification, form input, modal, list operation, or chart update
 - **Replay All** — re-trigger every animation at once
 - **Copy prompt** — click the request text to copy it to clipboard
 - **Reduced motion** — respects `prefers-reduced-motion` with opt-in override
