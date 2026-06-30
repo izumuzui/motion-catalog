@@ -1,8 +1,8 @@
 # Motion Catalog
 
-A searchable UI motion vocabulary reference — 186 patterns across 19 categories, each with a name, use case, and ready-to-use prompt for designers, developers, and AI tools.
+A searchable UI motion vocabulary reference — 199 patterns across 19 categories, each with a name, use case, and ready-to-use prompt for designers, developers, and AI tools.
 
-![Static Badge](https://img.shields.io/badge/motions-186-6366f1) ![Static Badge](https://img.shields.io/badge/categories-19-64748b) ![Static Badge](https://img.shields.io/badge/stack-HTML%20%2F%20CSS%20%2F%20JS-0f172a)
+![Static Badge](https://img.shields.io/badge/motions-199-6366f1) ![Static Badge](https://img.shields.io/badge/categories-19-64748b) ![Static Badge](https://img.shields.io/badge/stack-HTML%20%2F%20CSS%20%2F%20JS-0f172a)
 
 ![Motion Catalog screenshot](assets/screenshot.png)
 
@@ -27,8 +27,8 @@ python3 -m http.server 4177 --bind 127.0.0.1
 ## Features
 
 - **Search** — filter by name, Japanese name, or use case
-- **Category filters** — narrow down by motion type
-- **Use-case filters** — find motions by real UI situations such as page swipe, button click, notification, form input, modal, list operation, or chart update
+- **Component targets** — start from a small set of UI components such as button, form, overlay/menu, navigation, notification, card/list, loading, text, media, data, gesture, or visual effects
+- **Contextual previews** — generic motions render on the selected component, while semantic motions such as check, error, switch, spinner, chart, or cursor keep their dedicated HTML shape
 - **Replay All** — re-trigger every animation at once
 - **Copy prompt** — click the request text to copy it to clipboard
 - **Reduced motion** — respects `prefers-reduced-motion` with opt-in override
@@ -61,5 +61,5 @@ python3 -m http.server 4177 --bind 127.0.0.1
 No build step. No framework. No runtime dependencies.
 
 - `index.html` — structure and markup
-- `styles.css` — design system + all 186 animation keyframes
+- `styles.css` — design system + all 199 animation keyframes
 - `app.js` — data, rendering, search, filtering, and interaction logic
