@@ -4,7 +4,7 @@ A searchable UI motion vocabulary reference — 199 patterns across 19 categorie
 
 ![Static Badge](https://img.shields.io/badge/motions-199-6366f1) ![Static Badge](https://img.shields.io/badge/categories-19-64748b) ![Static Badge](https://img.shields.io/badge/stack-HTML%20%2F%20CSS%20%2F%20JS-0f172a)
 
-![Motion Catalog screenshot](assets/screenshot.png)
+<img width="2836" height="1579" alt="image" src="https://github.com/user-attachments/assets/8f7e9fbc-7100-4127-bb11-6730834e7587" />
 
 ## Overview
 
