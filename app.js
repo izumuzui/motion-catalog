@@ -1,15 +1,10 @@
 /* ================================================================
-   THE MOTION CATALOG — app.js
-   Fixes applied:
-   ✓ prefers-reduced-motion: banner + opt-in
-   ✓ aria-pressed on filter buttons
-   ✓ Clipboard copy for request text + toast
-   ✓ Debounced search (150ms)
-   ✓ IntersectionObserver: pause off-screen animations
-   ✓ Zenn article category alignment (Emphasis kept separate)
+   MOTION CATALOG — app.js
+   Data, rendering, search, filtering, and interaction logic.
+   No build step, no dependencies.
 ================================================================ */
 
-const SEARCH_DEBOUNCE = 150
+const SEARCH_DEBOUNCE = 120
 
 /* ── Data ───────────────────────────────────────────────────── */
 const categories = [
@@ -18,28 +13,10 @@ const categories = [
   'Input','Cursor','Menu','Media','Data','Visual',
 ]
 
-const useCases = [
-  { id: 'page-swipe', label: 'ページ遷移 / スワイプ', short: 'Page swipe' },
-  { id: 'button-click', label: 'ボタンクリック', short: 'Button click' },
-  { id: 'notification', label: '通知 / トースト', short: 'Notification' },
-  { id: 'form-input', label: 'フォーム入力', short: 'Form input' },
-  { id: 'loading', label: '待機 / 生成中', short: 'Loading' },
-  { id: 'list-work', label: '一覧操作', short: 'List work' },
-  { id: 'modal-drawer', label: 'モーダル / ドロワー', short: 'Modal drawer' },
-  { id: 'nav-tab', label: 'タブ / ナビ', short: 'Tabs nav' },
-  { id: 'card-media', label: 'カード / 画像', short: 'Card media' },
-  { id: 'data-viz', label: 'グラフ / 数値', short: 'Data viz' },
-  { id: 'success-error', label: '成功 / エラー', short: 'Status' },
-  { id: 'hover-cursor', label: 'ホバー / カーソル', short: 'Hover cursor' },
-  { id: 'scroll', label: 'スクロール連動', short: 'Scroll' },
-  { id: 'text', label: 'テキスト表示', short: 'Text' },
-  { id: 'menu', label: 'メニュー展開', short: 'Menu' },
-]
-
 const targets = [
   { id: 'button', label: 'ボタン', short: 'Button' },
   { id: 'form', label: 'フォーム', short: 'Form' },
-  { id: 'overlay', label: 'モーダル / メニュー', short: 'Overlay menu' },
+  { id: 'overlay', label: 'モーダル / メニュー', short: 'Overlay' },
   { id: 'navigation', label: 'ページ / ナビ', short: 'Navigation' },
   { id: 'notification', label: '通知 / トースト', short: 'Notification' },
   { id: 'card-list', label: 'カード / リスト', short: 'Card list' },
@@ -47,25 +24,11 @@ const targets = [
   { id: 'text', label: 'テキスト', short: 'Text' },
   { id: 'media', label: '画像 / メディア', short: 'Media' },
   { id: 'data', label: 'グラフ / 数値', short: 'Data' },
-  { id: 'gesture', label: 'ジェスチャー / スクロール', short: 'Gesture scroll' },
-  { id: 'cursor-visual', label: 'カーソル / 視覚効果', short: 'Cursor visual' },
+  { id: 'gesture', label: 'ジェスチャー / スクロール', short: 'Gesture' },
+  { id: 'cursor-visual', label: 'カーソル / 視覚効果', short: 'Visual' },
 ]
 
-const clusters = [
-  { id: 'tap-feedback', label: 'Tap feedback', short: '押した手応え' },
-  { id: 'state-change', label: 'State change', short: '状態変化' },
-  { id: 'choice-expand', label: 'Choice expand', short: '選択肢展開' },
-  { id: 'confirm-danger', label: 'Confirm / danger', short: '確認・破壊的操作' },
-  { id: 'attention-status', label: 'Attention / status', short: '注目・状態通知' },
-  { id: 'loading-progress', label: 'Loading / progress', short: '待機・進捗' },
-  { id: 'navigation-flow', label: 'Navigation flow', short: '遷移・ナビゲーション' },
-  { id: 'list-layout', label: 'List / layout', short: '一覧・配置変化' },
-  { id: 'input-validation', label: 'Input / validation', short: '入力・検証' },
-  { id: 'content-reveal', label: 'Content reveal', short: '表示・リビール' },
-  { id: 'media-data', label: 'Media / data', short: '画像・データ' },
-  { id: 'visual-effect', label: 'Visual effect', short: '装飾・演出' },
-]
-
+/* Each row: [name, jpName, category, useFor, request, className, preview] */
 const motions = [
   ['Fade In','フェードイン','Entrance','新しいカード、補助テキスト、空状態','この要素はフェードインで自然に表示して','fade-in','block'],
   ['Fade Up','フェードアップ','Entrance','一覧カード、モーダル、ページ冒頭','下から少しフェードアップして出して','fade-up','block'],
@@ -266,41 +229,153 @@ const motions = [
   ['Warp Overlay','ワープオーバーレイ','Visual','ページ遷移、AI演出、実験UI','オーバーレイが歪むワープ遷移にして','warp-overlay','panel'],
   ['Conic Pointer','コニックポインター','Visual','選択リング、ホバー、ハイライト','円錐グラデーションのポインターを回して','conic-pointer','ring'],
   ['Aurora Flow','オーロラフロー','Visual','背景、ヒーロー、AI生成','背景にオーロラのような流れを入れて','aurora-flow','panel'],
-].map(([name,jpName,category,useFor,request,className,preview]) =>
-  ({ name, jpName, category, useFor, request, className, preview })
+  ['Stepper Advance','ステッパー前進','Navigation','手順フォーム、チェックアウト、登録フロー','ステップが完了して次へ進む動きにして','stepper-advance','stepper'],
+  ['Progress Steps','進捗ステップ','Loading','ウィザード、複数段階の処理、セットアップ','ステップが順に完了していく進捗表示にして','progress-steps','stepper'],
+  ['Star Rating Fill','星評価フィル','Feedback','レビュー、評価入力、満足度','星が順番に埋まる評価アニメにして','star-rating','stars'],
+  ['Like Heart Burst','ハートバースト','Feedback','いいね、お気に入り、リアクション','ハートが弾けて満たされるいいねにして','heart-burst','heart'],
+  ['Chip Add','チップ追加','List','タグ入力、フィルター選択、宛先追加','タグチップがポップして追加されるようにして','chip-add','chips'],
+  ['Chip Remove','チップ削除','List','タグ解除、フィルター解除、選択解除','チップが縮んで外れて詰まるようにして','chip-remove','chips'],
+  ['Avatar Stack','アバタースタック','List','参加者一覧、共同編集、メンバー表示','アバターが順に重なって並ぶようにして','avatar-stack','avatars'],
+  ['OTP Focus Hop','OTP入力ホップ','Input','認証コード、PIN入力、確認コード','入力のたびに次の枠へフォーカスが移る動きにして','otp-hop','otp'],
+  ['Search Expand','検索展開','Input','ヘッダー検索、ツールバー、アイコン起点の入力','アイコンから検索欄が横に展開するようにして','search-expand','search-expand'],
+  ['Slider Value Pop','スライダー値ポップ','Input','音量、価格範囲、明るさ調整','ドラッグ中に現在値がポップして見えるようにして','slider-pop','slider'],
+  ['Typing Indicator','入力中インジケーター','Loading','チャット、AI応答待ち、会話UI','相手が入力中とわかるドットアニメにして','typing-indicator','dots'],
+  ['Skeleton Pulse','スケルトンパルス','Loading','一覧ロード、プロフィール読み込み','スケルトンを明滅させて読み込みを見せて','skeleton-pulse','skeleton'],
+  ['Upload Progress','アップロード完了','Loading','ファイル添付、画像アップロード','ファイルが上がって完了チェックへ変わる動きにして','upload-progress','upload'],
+  ['Confetti Burst','紙吹雪バースト','Feedback','達成、購入完了、レベルアップ','完了時に紙吹雪を散らして祝って','confetti','confetti'],
+  ['Badge Counter Pop','バッジカウンター','Emphasis','未読数、カート数、通知バッジ','未読バッジが弾んで数字が更新されるようにして','badge-pop','badge'],
+  ['Bell Ring','ベルリング','Emphasis','新着通知、リマインダー、アラート','通知ベルが揺れて知らせるようにして','bell-ring','bell'],
+  ['Empty State Float','空状態フロート','Emphasis','データなし、初回画面、検索0件','空状態のイラストをゆっくり浮かせて','empty-float','empty'],
+  ['Theme Toggle','テーマ切替','Button','ダークモード切替、表示設定','太陽と月が入れ替わるテーマ切替にして','theme-toggle','theme-toggle'],
+  ['Pagination Dots','ページネーションドット','Navigation','カルーセル、オンボーディング、スライド','アクティブなドットが伸びて移動するようにして','pagination-dots','pagedots'],
+  ['Toast Queue','トーストキュー','Menu','連続通知、複数アラート、保存の連発','トーストが積み上がって順に消えるようにして','toast-queue','toast-queue'],
+  ['Price Flip','価格フリップ','Data','料金表示、為替、更新される数値','価格が上下にフリップして更新されるようにして','price-flip','ticker'],
+  ['Number Odometer','オドメーター','Data','フォロワー数、売上、統計値','数字がオドメーター式に回転して揃うようにして','odometer','ticker'],
+  ['Signal Bars','シグナルバー','Data','接続強度、音量レベル、稼働状況','シグナルバーが順に立ち上がるようにして','signal-bars','bars'],
+  ['Card Shuffle','カードシャッフル','Layout','デッキ、ランダム表示、抽選','カードが切り直されるシャッフルにして','card-shuffle','deck'],
+  ['Breathing Backdrop','呼吸背景','Visual','瞑想アプリ、待機画面、オンボーディング','背景がゆっくり呼吸するように明滅させて','breath-backdrop','panel'],
+].map(([name, jpName, category, useFor, request, className, preview], index) =>
+  ({ id: index + 1, name, jpName, category, useFor, request, className, preview })
 )
 
+function motionText(motion) {
+  return `${motion.name} ${motion.jpName} ${motion.category} ${motion.useFor} ${motion.request} ${motion.className}`.toLowerCase()
+}
+
+function hasAny(text, words) {
+  return words.some(word => text.includes(word.toLowerCase()))
+}
+
+function deriveTargets(motion) {
+  const text = motionText(motion)
+  const tags = new Set()
+  const buttonPreview = [
+    'button', 'button-icon', 'button-label', 'button-loader', 'button-fill',
+    'button-danger', 'button-split', 'button-segmented', 'button-count',
+    'choice-expand', 'theme-toggle', 'heart', 'stars'
+  ].includes(motion.preview)
+  const buttonLike = motion.category === 'Button' || buttonPreview || hasAny(text, ['button', 'ボタン', 'tap', 'タップ', 'press', 'プレス'])
+
+  if (buttonLike) tags.add('button')
+  if (
+    motion.category === 'Input' ||
+    hasAny(text, ['input', '入力', 'form', 'フォーム', 'validation', '検証', 'password', 'パスワード', 'checkbox', 'radio', 'switch', 'label', 'ラベル', 'slider', 'スライダー'])
+  ) tags.add('form')
+  if (
+    motion.category === 'Menu' ||
+    hasAny(text, ['modal', 'モーダル', 'dialog', 'ダイアログ', 'drawer', 'ドロワー', 'sheet', 'シート', 'menu', 'メニュー', 'tooltip', 'ツールチップ', 'palette', 'パレット', 'fab'])
+  ) tags.add('overlay')
+  if (
+    motion.category === 'Navigation' ||
+    hasAny(text, ['page', 'ページ', 'nav', 'ナビ', 'tab', 'タブ', 'breadcrumb', 'パンくず', 'accordion', 'アコーディオン', 'transition', '遷移', 'stepper', 'ステップ'])
+  ) tags.add('navigation')
+  if (
+    motion.category !== 'Input' &&
+    hasAny(text, ['toast', 'トースト', 'notification', '通知', 'badge', 'バッジ', 'ping', 'ピング', 'warning', '警告', '新着', 'ライブ状態', 'ベル', 'アラート'])
+  ) tags.add('notification')
+  if (
+    motion.category === 'List' ||
+    motion.category === 'Layout' ||
+    hasAny(text, ['card', 'カード', 'list', '一覧', 'row', '行', 'table', 'テーブル', 'grid', 'グリッド', 'reorder', '並べ替え', 'sort', 'ソート', 'チップ', 'アバター', '空状態'])
+  ) tags.add('card-list')
+  if (
+    motion.category === 'Loading' ||
+    hasAny(text, ['loading', 'ローディング', 'loader', 'ローダー', 'progress', '進捗', 'spinner', 'スピナー', 'skeleton', 'スケルトン', '処理中', '生成中', 'アップロード'])
+  ) tags.add('loading')
+  if (
+    motion.category === 'Text' ||
+    hasAny(text, ['text', 'テキスト', 'typewriter', 'タイプライター', 'letter', '文字', 'word', '単語', 'ticker'])
+  ) tags.add('text')
+  if (
+    motion.category === 'Media' ||
+    hasAny(text, ['image', '画像', 'photo', '写真', 'video', '動画', 'media', 'メディア', 'gallery', 'ギャラリー', 'carousel', 'カルーセル'])
+  ) tags.add('media')
+  if (
+    motion.category === 'Data' ||
+    hasAny(text, ['chart', 'グラフ', 'data', 'データ', '数値', 'number', '数字', 'count', 'カウント', 'gauge', 'ゲージ', 'heatmap', 'ヒートマップ', '評価', '価格'])
+  ) tags.add('data')
+  if (
+    motion.category === 'Gesture' ||
+    motion.category === 'Scroll' ||
+    hasAny(text, ['gesture', 'ジェスチャー', 'scroll', 'スクロール', 'swipe', 'スワイプ', 'drag', 'ドラッグ', 'long press', '長押し', 'pinch', 'ピンチ'])
+  ) tags.add('gesture')
+  if (
+    motion.category === 'Cursor' ||
+    motion.category === 'Visual' ||
+    hasAny(text, ['cursor', 'カーソル', 'hover', 'ホバー', 'glass', 'グラス', 'glitch', 'グリッチ', 'scan', 'スキャン', 'noise', 'ノイズ', 'aurora', 'オーロラ'])
+  ) tags.add('cursor-visual')
+
+  if (!tags.size) tags.add('card-list')
+  return [...tags]
+}
+
 motions.forEach(motion => {
-  motion.useCases = deriveUseCases(motion)
   motion.targets = deriveTargets(motion)
-  motion.cluster = deriveCluster(motion)
+  motion.haystack = `${motionText(motion)} ${motion.targets
+    .map(id => {
+      const hit = targets.find(item => item.id === id)
+      return hit ? `${hit.label} ${hit.short}` : ''
+    })
+    .join(' ')}`.toLowerCase()
 })
 
 /* ── State ──────────────────────────────────────────────────── */
 let activeTarget = 'All'
 let activeCategory = 'All'
-let activeUseCase = 'All'
-let activeCluster = 'All'
-let replayKey = 0
+let speedRate = 1
 let motionForced = false
 
 /* ── DOM refs ───────────────────────────────────────────────── */
 const grid          = document.getElementById('catalogGrid')
 const searchInput   = document.getElementById('searchInput')
+const searchClear   = document.getElementById('searchClear')
 const targetEl      = document.getElementById('targetFilters')
 const filtersEl     = document.getElementById('categoryFilters')
-const useCaseEl     = document.getElementById('useCaseFilters')
-const clusterEl     = document.getElementById('clusterFilters')
-const clusterSection = document.getElementById('clusterSection')
-const useCaseSection = document.getElementById('useCaseSection')
-const categorySection = document.getElementById('categorySection')
 const replayAllBtn  = document.getElementById('replayAll')
-const summaryStrip  = document.getElementById('summaryStrip')
+const speedBtn      = document.getElementById('speedToggle')
+const themeBtn      = document.getElementById('themeToggle')
 const toastEl       = document.getElementById('toast')
 const banner        = document.getElementById('reducedMotionBanner')
 const enableBtn     = document.getElementById('enableMotion')
 const emptyState    = document.getElementById('emptyState')
-const totalCount    = document.getElementById('totalCount')
+const resetBtn      = document.getElementById('resetFilters')
+const resultCount   = document.getElementById('resultCount')
+
+/* ── Theme ──────────────────────────────────────────────────── */
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)')
+
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme
+  themeBtn.setAttribute('aria-label', theme === 'dark' ? 'ライトテーマに切り替える' : 'ダークテーマに切り替える')
+}
+
+applyTheme(localStorage.getItem('mc-theme') || (prefersDark.matches ? 'dark' : 'light'))
+
+themeBtn.addEventListener('click', () => {
+  const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'
+  localStorage.setItem('mc-theme', next)
+  applyTheme(next)
+})
 
 /* ── Reduced Motion ─────────────────────────────────────────── */
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -335,245 +410,53 @@ function showToast(msg) {
   toastTimer = setTimeout(() => toastEl.classList.remove('is-visible'), 2000)
 }
 
-function motionText(motion) {
-  return `${motion.name} ${motion.jpName} ${motion.category} ${motion.useFor} ${motion.request} ${motion.className}`.toLowerCase()
-}
-
-function hasAny(text, words) {
-  return words.some(word => text.includes(word.toLowerCase()))
-}
-
-function deriveUseCases(motion) {
-  const text = motionText(motion)
-  const tags = new Set()
-
-  if (
-    motion.category === 'Navigation' ||
-    hasAny(text, ['swipe', 'スワイプ', 'page', 'ページ', 'shared axis', '共有軸', 'slide', 'カルーセル', 'carousel', 'drawer', 'bottom sheet'])
-  ) tags.add('page-swipe')
-
-  if (
-    motion.category === 'Button' ||
-    hasAny(text, ['button', 'ボタン', 'click', 'クリック', 'tap', 'タップ', 'press', 'プレス', 'copy', 'コピー', 'confirm', '確認', 'favorite', 'お気に入り', 'download', 'ダウンロード'])
-  ) tags.add('button-click')
-
-  if (
-    motion.category !== 'Input' &&
-    hasAny(text, ['toast', 'トースト', 'notification', '通知カード', '通知点', '通知バー', '通知一覧', 'badge', 'バッジ', 'warning', '警告', 'ping', 'ピング', 'flash', 'フラッシュ', 'blink', 'ブリンク', 'ライブ状態', '新着'])
-  ) tags.add('notification')
-
-  if (
-    motion.category === 'Input' ||
-    hasAny(text, ['input', '入力', 'form', 'フォーム', 'field', 'フィールド', 'label', 'ラベル', 'validation', '検証', 'password', 'パスワード', 'checkbox', 'radio', 'switch'])
-  ) tags.add('form-input')
-
-  if (
-    motion.category === 'Loading' ||
-    hasAny(text, ['loading', 'ローディング', 'loader', 'ローダー', 'spinner', 'スピナー', 'progress', '進捗', 'skeleton', 'スケルトン', '生成中', '同期中', '待機', '処理中'])
-  ) tags.add('loading')
-
-  if (
-    motion.category === 'List' ||
-    hasAny(text, ['list', '一覧', 'row', '行', 'insert', '挿入', 'remove', '削除', 'reorder', '並べ替え', 'sort', 'ソート', 'filter', '絞り込み', '検索結果'])
-  ) tags.add('list-work')
-
-  if (
-    hasAny(text, ['modal', 'モーダル', 'dialog', 'ダイアログ', 'drawer', 'ドロワー', 'sheet', 'シート', 'backdrop', '確認', '詳細表示'])
-  ) tags.add('modal-drawer')
-
-  if (
-    hasAny(text, ['tab', 'タブ', 'nav', 'ナビ', 'menu', 'メニュー', 'breadcrumb', 'パンくず', 'accordion', 'アコーディオン', 'underline', 'リンク'])
-  ) tags.add('nav-tab')
-
-  if (
-    motion.category === 'Media' ||
-    hasAny(text, ['card', 'カード', 'image', '画像', 'photo', '写真', 'video', '動画', 'media', 'gallery', 'ギャラリー', 'thumbnail', 'サムネ', 'zoom', 'ズーム'])
-  ) tags.add('card-media')
-
-  if (
-    motion.category === 'Data' ||
-    hasAny(text, ['chart', 'グラフ', 'data', '数値', 'count', 'カウント', 'gauge', 'ゲージ', 'heatmap', 'ヒートマップ', 'dashboard', '分析', '売上', '価格'])
-  ) tags.add('data-viz')
-
-  if (
-    hasAny(text, ['success', '成功', 'error', 'エラー', 'check', 'チェック', 'x', '失敗', '削除不可', '検証', 'shake', 'シェイク', 'deny', '拒否', '完了'])
-  ) tags.add('success-error')
-
-  if (
-    motion.category === 'Cursor' ||
-    hasAny(text, ['hover', 'ホバー', 'cursor', 'カーソル', 'magnetic', 'マグネティック', 'tilt', 'チルト', 'lift', 'リフト', 'tooltip', 'ツールチップ'])
-  ) tags.add('hover-cursor')
-
-  if (
-    motion.category === 'Scroll' ||
-    hasAny(text, ['scroll', 'スクロール', 'parallax', 'パララックス', 'sticky', 'スティッキー', 'ken burns'])
-  ) tags.add('scroll')
-
-  if (
-    motion.category === 'Text' ||
-    hasAny(text, ['text', 'テキスト', 'typewriter', 'タイプライター', 'letter', '文字', 'word', '単語', 'scramble', 'ticker'])
-  ) tags.add('text')
-
-  if (
-    motion.category === 'Menu' ||
-    hasAny(text, ['menu', 'メニュー', 'choice', '選択肢', 'option', 'オプション', 'palette', 'パレット', 'radial', 'ラジアル', 'fab', 'tooltip', 'ツールチップ'])
-  ) tags.add('menu')
-
-  if (!tags.size) tags.add('card-media')
-  return [...tags]
-}
-
-function deriveTargets(motion) {
-  const text = motionText(motion)
-  const tags = new Set()
-  const buttonPreview = [
-    'button', 'button-icon', 'button-label', 'button-loader', 'button-fill',
-    'button-danger', 'button-split', 'button-segmented', 'button-count',
-    'choice-expand'
-  ].includes(motion.preview)
-  const buttonLike = motion.category === 'Button' || buttonPreview || hasAny(text, ['button', 'ボタン', 'tap', 'タップ', 'press', 'プレス'])
-
-  if (buttonLike) tags.add('button')
-  if (
-    motion.category === 'Input' ||
-    hasAny(text, ['input', '入力', 'form', 'フォーム', 'validation', '検証', 'password', 'パスワード', 'checkbox', 'radio', 'switch', 'label', 'ラベル'])
-  ) tags.add('form')
-  if (
-    motion.category === 'Menu' ||
-    hasAny(text, ['modal', 'モーダル', 'dialog', 'ダイアログ', 'drawer', 'ドロワー', 'sheet', 'シート', 'menu', 'メニュー', 'tooltip', 'ツールチップ', 'palette', 'パレット', 'fab'])
-  ) tags.add('overlay')
-  if (
-    motion.category === 'Navigation' ||
-    hasAny(text, ['page', 'ページ', 'nav', 'ナビ', 'tab', 'タブ', 'breadcrumb', 'パンくず', 'accordion', 'アコーディオン', 'transition', '遷移'])
-  ) tags.add('navigation')
-  if (
-    motion.category !== 'Input' &&
-    hasAny(text, ['toast', 'トースト', 'notification', '通知カード', '通知点', '通知バー', '通知一覧', 'badge', 'バッジ', 'ping', 'ピング', 'warning', '警告', '新着', 'ライブ状態'])
-  ) tags.add('notification')
-  if (
-    motion.category === 'List' ||
-    motion.category === 'Layout' ||
-    hasAny(text, ['card', 'カード', 'list', '一覧', 'row', '行', 'table', 'テーブル', 'grid', 'グリッド', 'reorder', '並べ替え', 'sort', 'ソート'])
-  ) tags.add('card-list')
-  if (
-    motion.category === 'Loading' ||
-    hasAny(text, ['loading', 'ローディング', 'loader', 'ローダー', 'progress', '進捗', 'spinner', 'スピナー', 'skeleton', 'スケルトン', '処理中', '生成中'])
-  ) tags.add('loading')
-  if (
-    motion.category === 'Text' ||
-    hasAny(text, ['text', 'テキスト', 'typewriter', 'タイプライター', 'letter', '文字', 'word', '単語', 'ticker'])
-  ) tags.add('text')
-  if (
-    motion.category === 'Media' ||
-    hasAny(text, ['image', '画像', 'photo', '写真', 'video', '動画', 'media', 'メディア', 'gallery', 'ギャラリー', 'carousel', 'カルーセル'])
-  ) tags.add('media')
-  if (
-    motion.category === 'Data' ||
-    hasAny(text, ['chart', 'グラフ', 'data', 'データ', '数値', 'number', '数字', 'count', 'カウント', 'gauge', 'ゲージ', 'heatmap', 'ヒートマップ'])
-  ) tags.add('data')
-  if (
-    motion.category === 'Gesture' ||
-    motion.category === 'Scroll' ||
-    hasAny(text, ['gesture', 'ジェスチャー', 'scroll', 'スクロール', 'swipe', 'スワイプ', 'drag', 'ドラッグ', 'long press', '長押し', 'pinch', 'ピンチ'])
-  ) tags.add('gesture')
-  if (
-    motion.category === 'Cursor' ||
-    motion.category === 'Visual' ||
-    hasAny(text, ['cursor', 'カーソル', 'hover', 'ホバー', 'glass', 'グラス', 'glitch', 'グリッチ', 'scan', 'スキャン', 'noise', 'ノイズ', 'aurora', 'オーロラ'])
-  ) tags.add('cursor-visual')
-
-  if (!tags.size) tags.add('card-list')
-  return [...tags]
-}
-
-function deriveCluster(motion) {
-  const text = motionText(motion)
-
-  if (
-    hasAny(text, [
-      'button press', 'プレス', 'ripple', 'リップル', 'tap', 'タップ',
-      'scale tap', 'スケールタップ', 'depth press', '奥行きプレス', 'soft rebound', 'ソフトリバウンド',
-      'squash', 'スクワッシュ', 'haptic', 'hover', 'ホバー', 'magnetic', 'マグネティック', 'lift', 'リフト'
-    ])
-  ) return 'tap-feedback'
-
-  if (
-    motion.category === 'Menu' ||
-    hasAny(text, [
-      'choice expand', '選択肢展開', 'split button', '分割ボタン', 'menu', 'メニュー',
-      'palette', 'パレット', 'radial', 'ラジアル', 'fab', 'tooltip', 'ツールチップ', 'autocomplete', '候補'
-    ])
-  ) return 'choice-expand'
-
-  if (
-    hasAny(text, [
-      'copy confirm', 'コピー確認', 'submit morph', '送信モーフ', 'favorite', 'お気に入り',
-      'download', 'ダウンロード', 'icon swap', 'アイコン入れ替え', 'label slide', 'ラベルスライド',
-      'success fill', '成功フィル', 'toggle', '切替', 'segmented', 'セグメント', 'count bump', 'カウントバンプ',
-      'switch', 'checkbox', 'radio'
-    ])
-  ) return 'state-change'
-
-  if (
-    hasAny(text, [
-      'hold to confirm', '長押し確認', 'destructive', '破壊的', 'delete', '削除',
-      'danger', '危険', 'deny', '拒否', 'error', 'エラー', 'shake', 'シェイク', 'burn', 'バーン',
-      'reset', 'リセット', '退会'
-    ])
-  ) return 'confirm-danger'
-
-  if (
-    motion.category === 'Loading' ||
-    hasAny(text, ['loading', 'ローディング', 'loader', 'ローダー', 'progress', '進捗', 'spinner', 'スピナー', 'inline loading', 'インラインローディング', '処理中', '生成中', '待機'])
-  ) return 'loading-progress'
-
-  if (
-    motion.category === 'Navigation' ||
-    motion.category === 'Gesture' ||
-    hasAny(text, ['page', 'ページ', 'navigation', 'nav', '遷移', 'swipe', 'スワイプ', 'drawer', 'ドロワー', 'sheet', 'シート', 'tab', 'タブ'])
-  ) return 'navigation-flow'
-
-  if (
-    ['Entrance', 'Exit', 'Reveal', 'Text', 'Scroll'].includes(motion.category) ||
-    hasAny(text, ['reveal', 'リビール', 'fade', 'フェード', 'text', 'テキスト', 'scroll', 'スクロール', 'typewriter', 'タイプライター'])
-  ) return 'content-reveal'
-
-  if (
-    motion.category === 'List' ||
-    motion.category === 'Layout' ||
-    hasAny(text, ['list', '一覧', 'layout', 'カード', 'card', 'reorder', '並べ替え', 'filter', '絞り込み', 'expand', '拡張', 'flip', 'フリップ'])
-  ) return 'list-layout'
-
-  if (
-    motion.category === 'Input' ||
-    hasAny(text, ['input', '入力', 'validation', '検証', 'form', 'フォーム', 'password', 'パスワード', 'label', 'ラベル'])
-  ) return 'input-validation'
-
-  if (
-    motion.category === 'Media' ||
-    motion.category === 'Data' ||
-    hasAny(text, ['image', '画像', 'photo', '写真', 'video', '動画', 'chart', 'グラフ', 'data', '数値'])
-  ) return 'media-data'
-
-  if (
-    motion.category === 'Emphasis' ||
-    hasAny(text, ['pulse', 'パルス', 'attention', '注目', 'status', '状態', 'notification', '通知', 'toast', 'トースト', 'success', '成功', 'warning', '警告'])
-  ) return 'attention-status'
-
-  return 'visual-effect'
-}
-
-/* ── Clipboard copy ─────────────────────────────────────────── */
-async function copyRequest(text) {
+/* ── Clipboard ──────────────────────────────────────────────── */
+async function copyText(text, okMsg) {
   try {
     await navigator.clipboard.writeText(text)
-    showToast('コピーしました ✓')
+    showToast(okMsg)
   } catch {
     showToast('コピーに失敗しました')
   }
 }
 
-/* ── IntersectionObserver ───────────────────────────────────── */
+/* ── CSS extraction (Copy CSS) ──────────────────────────────── */
+function extractMotionCSS(className) {
+  const styleRules = []
+  const keyframeNames = new Set()
+  const clsRe = new RegExp(`\\.${className}(?![\\w-])`)
+
+  for (const sheet of document.styleSheets) {
+    let rules
+    try { rules = sheet.cssRules } catch { continue }
+    for (const rule of rules) {
+      if (rule instanceof CSSStyleRule && clsRe.test(rule.selectorText)) {
+        styleRules.push(rule.cssText)
+        const names = rule.style.getPropertyValue('animation-name') || ''
+        names.split(',').forEach(n => {
+          const name = n.trim()
+          if (name && name !== 'none') keyframeNames.add(name)
+        })
+      }
+    }
+  }
+
+  const keyframeRules = []
+  for (const sheet of document.styleSheets) {
+    let rules
+    try { rules = sheet.cssRules } catch { continue }
+    for (const rule of rules) {
+      if (rule instanceof CSSKeyframesRule && keyframeNames.has(rule.name)) {
+        keyframeRules.push(rule.cssText)
+      }
+    }
+  }
+
+  if (!styleRules.length) return null
+  return [...styleRules, '', ...keyframeRules].join('\n')
+}
+
+/* ── IntersectionObserver: pause off-screen previews ────────── */
 let cardObserver
 function setupObserver() {
   if (cardObserver) cardObserver.disconnect()
@@ -601,7 +484,10 @@ function resolvePreviewType(motion) {
     'type', 'words', 'ticker', 'cursor', 'trail', 'spotlight', 'gallery',
     'compare', 'marquee', 'slider', 'burst', 'button-submit', 'button-download',
     'input-success', 'input-error', 'autocomplete', 'char-counter', 'morph-loader',
-    'liquid-blob', 'scramble', 'breadcrumb'
+    'liquid-blob', 'scramble', 'breadcrumb', 'choice-expand', 'button-split',
+    'stepper', 'stars', 'chips', 'avatars', 'otp', 'search-expand', 'upload',
+    'confetti', 'badge', 'bell', 'empty', 'theme-toggle', 'pagedots',
+    'toast-queue', 'heart'
   ]
   if (semanticPreviewTypes.includes(motion.preview)) return motion.preview
 
@@ -779,7 +665,7 @@ function renderPreview(motion) {
     case 'pie':
       return `<div class="preview-stage"><div class="${cls} preview-pie"></div></div>`
     case 'heatmap':
-      return `<div class="preview-stage"><div class="${cls} preview-heatmap">${Array.from({length: 20}, () => '<span></span>').join('')}</div></div>`
+      return `<div class="preview-stage"><div class="${cls} preview-heatmap">${Array.from({ length: 20 }, () => '<span></span>').join('')}</div></div>`
     case 'pin':
       return `<div class="preview-stage"><div class="${cls} preview-pin"><span></span></div></div>`
     case 'gauge':
@@ -823,6 +709,36 @@ function renderPreview(motion) {
       return `<div class="preview-stage"><div class="${cls} preview-circle"></div></div>`
     case 'spinner':
       return `<div class="preview-stage"><div class="${cls} preview-spinner"></div></div>`
+    case 'stepper':
+      return `<div class="preview-stage"><div class="${cls} preview-stepper"><span>1</span><i></i><span>2</span><i></i><span>3</span></div></div>`
+    case 'stars':
+      return `<div class="preview-stage"><div class="${cls} preview-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div></div>`
+    case 'heart':
+      return `<div class="preview-stage"><div class="${cls} preview-heart"><span></span><i></i><i></i><i></i><i></i></div></div>`
+    case 'chips':
+      return `<div class="preview-stage"><div class="${cls} preview-chips"><span>Design</span><span>Motion</span><span>UI</span></div></div>`
+    case 'avatars':
+      return `<div class="preview-stage"><div class="${cls} preview-avatars"><span>A</span><span>K</span><span>M</span><span>+3</span></div></div>`
+    case 'otp':
+      return `<div class="preview-stage"><div class="${cls} preview-otp"><span></span><span></span><span></span><span></span></div></div>`
+    case 'search-expand':
+      return `<div class="preview-stage"><div class="${cls} preview-search-expand"><i></i><span></span></div></div>`
+    case 'upload':
+      return `<div class="preview-stage"><div class="${cls} preview-upload"><span></span><i></i><b></b></div></div>`
+    case 'confetti':
+      return `<div class="preview-stage"><div class="${cls} preview-confetti"><b></b>${Array.from({ length: 10 }, () => '<span></span>').join('')}</div></div>`
+    case 'badge':
+      return `<div class="preview-stage"><div class="${cls} preview-badge"><span></span><i>3</i></div></div>`
+    case 'bell':
+      return `<div class="preview-stage"><div class="${cls} preview-bell"><span></span><i></i></div></div>`
+    case 'empty':
+      return `<div class="preview-stage"><div class="${cls} preview-empty"><span></span><i></i><b></b></div></div>`
+    case 'theme-toggle':
+      return `<div class="preview-stage"><div class="${cls} preview-theme-toggle"><span></span><i></i></div></div>`
+    case 'pagedots':
+      return `<div class="preview-stage"><div class="${cls} preview-pagedots"><span></span><span></span><span></span><span></span></div></div>`
+    case 'toast-queue':
+      return `<div class="preview-stage"><div class="${cls} preview-toast-queue"><span></span><span></span><span></span></div></div>`
     default:
       return `<div class="preview-stage"><div class="${cls} preview-block"></div></div>`
   }
@@ -837,175 +753,131 @@ function matchesTarget(motion, target = activeTarget) {
   return target === 'All' || motion.targets.includes(target)
 }
 
-function matchesUseCase(motion, useCase = activeUseCase) {
-  return useCase === 'All' || motion.useCases.includes(useCase)
+function matchesSearch(motion, query) {
+  if (!query) return true
+  return query.split(/\s+/).every(term => motion.haystack.includes(term))
 }
 
-function matchesCluster(motion, cluster = activeCluster) {
-  return cluster === 'All' || motion.cluster === cluster
-}
-
-function clusterLabel(id) {
-  const hit = clusters.find(item => item.id === id)
-  return hit ? hit.label : id
+function currentQuery() {
+  return searchInput.value.trim().toLowerCase()
 }
 
 function targetLabel(id) {
   const hit = targets.find(item => item.id === id)
-  return hit ? hit.label : id
-}
-
-function targetLabels(ids) {
-  return ids
-    .map(id => {
-      const hit = targets.find(item => item.id === id)
-      return hit ? `${hit.label} ${hit.short}` : ''
-    })
-    .join(' ')
-}
-
-function targetVisual(id) {
-  const parts = {
-    All: '<span></span><span></span><span></span><span></span>',
-    button: '<span></span><i></i>',
-    form: '<span></span><i></i><i></i>',
-    overlay: '<span></span><i></i>',
-    navigation: '<span></span><span></span><span></span>',
-    notification: '<span></span><i></i>',
-    'card-list': '<span></span><i></i><i></i>',
-    loading: '<span></span><i></i>',
-    text: '<span></span><i></i><i></i>',
-    media: '<span></span><i></i>',
-    data: '<span></span><i></i><i></i>',
-    gesture: '<span></span><i></i>',
-    'cursor-visual': '<span></span><i></i>',
-  }
-  return `<span class="target-card__visual target-card__visual--${id}" aria-hidden="true">${parts[id] || parts.All}</span>`
-}
-
-function matchesSearch(motion, query) {
-  if (!query) return true
-  const useCaseLabels = motion.useCases
-    .map(id => {
-      const hit = useCases.find(item => item.id === id)
-      return hit ? `${hit.label} ${hit.short}` : ''
-    })
-    .join(' ')
-  const currentCluster = clusters.find(item => item.id === motion.cluster)
-  const clusterText = currentCluster ? `${currentCluster.label} ${currentCluster.short}` : ''
-  const haystack = `${motion.name} ${motion.jpName} ${motion.category} ${motion.useFor} ${motion.request} ${motion.className} ${useCaseLabels} ${clusterText} ${targetLabels(motion.targets)}`.toLowerCase()
-  return haystack.includes(query)
+  return hit ? hit.short : id
 }
 
 function createTargetFilters() {
-  const allTargets = [{ id: 'All', label: 'All', short: 'All targets' }, ...targets]
+  const query = currentQuery()
+  const allTargets = [{ id: 'All', label: 'すべて', short: 'All' }, ...targets]
   targetEl.innerHTML = allTargets.map(item => {
-    const count = item.id === 'All'
-      ? motions.filter(m => matchesCategory(m) && matchesUseCase(m) && matchesCluster(m)).length
-      : motions.filter(m => matchesTarget(m, item.id) && matchesCategory(m) && matchesUseCase(m) && matchesCluster(m)).length
+    const count = motions.filter(m =>
+      matchesTarget(m, item.id) && matchesCategory(m) && matchesSearch(m, query)
+    ).length
     const isActive = item.id === activeTarget
     return `<button
-      class="filter-button filter-button--target target-card"
+      class="chip chip--target"
       data-target="${item.id}"
       type="button"
-      role="tab"
       aria-pressed="${isActive}"
-      aria-selected="${isActive}"
       title="${item.short}"
-    >
-      ${targetVisual(item.id)}
-      <span class="target-card__text">${item.label}</span>
-      <span class="count">${count}</span>
-    </button>`
+    >${item.label}<span class="chip__count">${count}</span></button>`
   }).join('')
 }
 
-function createFilters() {
+function createCategoryFilters() {
+  const query = currentQuery()
   const allCategories = ['All', ...categories]
   filtersEl.innerHTML = allCategories.map(cat => {
-    const count = cat === 'All'
-      ? motions.filter(m => matchesTarget(m) && matchesUseCase(m) && matchesCluster(m)).length
-      : motions.filter(m => matchesCategory(m, cat) && matchesTarget(m) && matchesUseCase(m) && matchesCluster(m)).length
+    const count = motions.filter(m =>
+      matchesCategory(m, cat) && matchesTarget(m) && matchesSearch(m, query)
+    ).length
     if (cat !== 'All' && count === 0) return ''
     const isActive = cat === activeCategory
     return `<button
-      class="filter-button"
+      class="chip chip--category"
       data-category="${cat}"
       type="button"
-      role="tab"
       aria-pressed="${isActive}"
-      aria-selected="${isActive}"
-    >${cat}<span class="count">${count}</span></button>`
+    >${cat === 'All' ? 'すべて' : cat}<span class="chip__count">${count}</span></button>`
   }).join('')
 }
 
-function createUseCaseFilters() {
-  const allUseCases = [{ id: 'All', label: 'All', short: 'All' }, ...useCases]
-  useCaseEl.innerHTML = allUseCases.map(item => {
-    const count = item.id === 'All'
-      ? motions.filter(m => matchesTarget(m) && matchesCategory(m) && matchesCluster(m)).length
-      : motions.filter(m => matchesUseCase(m, item.id) && matchesTarget(m) && matchesCategory(m) && matchesCluster(m)).length
-    if (item.id !== 'All' && count === 0) return ''
-    const isActive = item.id === activeUseCase
-    return `<button
-      class="filter-button filter-button--usecase"
-      data-use-case="${item.id}"
-      type="button"
-      role="tab"
-      aria-pressed="${isActive}"
-      aria-selected="${isActive}"
-      title="${item.short}"
-    >${item.label}<span class="count">${count}</span></button>`
-  }).join('')
+/* ── URL state ──────────────────────────────────────────────── */
+function readStateFromURL() {
+  const params = new URLSearchParams(location.search)
+  const q = params.get('q')
+  const target = params.get('target')
+  const cat = params.get('cat')
+  if (q) searchInput.value = q
+  if (target && targets.some(t => t.id === target)) activeTarget = target
+  if (cat && categories.includes(cat)) activeCategory = cat
 }
 
-function createClusterFilters() {
-  const allClusters = [{ id: 'All', label: 'All', short: 'All clusters' }, ...clusters]
-  clusterEl.innerHTML = allClusters.map(item => {
-    const count = item.id === 'All'
-      ? motions.filter(m => matchesTarget(m) && matchesCategory(m) && matchesUseCase(m)).length
-      : motions.filter(m => matchesCluster(m, item.id) && matchesTarget(m) && matchesCategory(m) && matchesUseCase(m)).length
-    if (item.id !== 'All' && count === 0) return ''
-    const isActive = item.id === activeCluster
-    return `<button
-      class="filter-button filter-button--cluster"
-      data-cluster="${item.id}"
-      type="button"
-      role="tab"
-      aria-pressed="${isActive}"
-      aria-selected="${isActive}"
-      title="${item.short}"
-    >${item.label}<span class="count">${count}</span></button>`
-  }).join('')
+function writeStateToURL() {
+  const params = new URLSearchParams()
+  const q = searchInput.value.trim()
+  if (q) params.set('q', q)
+  if (activeTarget !== 'All') params.set('target', activeTarget)
+  if (activeCategory !== 'All') params.set('cat', activeCategory)
+  const qs = params.toString()
+  history.replaceState(null, '', qs ? `?${qs}` : location.pathname)
 }
 
-/* ── Summary (Table of Contents) ────────────────────────────── */
-function createSummary() {
-  summaryStrip.innerHTML = categories.map(cat => {
-    const count = motions.filter(m => m.category === cat && matchesTarget(m) && matchesUseCase(m) && matchesCluster(m)).length
-    if (count === 0) return ''
-    return `<button type="button" data-category="${cat}" class="contents-card">
-      <strong>${count}</strong>
-      <span>${cat}</span>
-    </button>`
-  }).join('')
+/* ── Playback speed ─────────────────────────────────────────── */
+const SPEED_STEPS = [1, 0.5, 2]
+
+function applySpeed() {
+  document.getAnimations().forEach(anim => { anim.playbackRate = speedRate })
 }
 
-function updateFilterVisibility() {
-  ;[clusterSection, useCaseSection, categorySection, summaryStrip].forEach(el => {
-    el.hidden = true
-    el.style.display = 'none'
+speedBtn.addEventListener('click', () => {
+  const next = SPEED_STEPS[(SPEED_STEPS.indexOf(speedRate) + 1) % SPEED_STEPS.length]
+  speedRate = next
+  speedBtn.textContent = `${String(next).replace('0.5', '.5')}×`
+  speedBtn.setAttribute('aria-label', `再生速度 ${next}倍`)
+  applySpeed()
+})
+
+/* ── Spec line: read real duration / easing from the animation ─ */
+function fillSpecs() {
+  document.querySelectorAll('.motion-card').forEach(card => {
+    const specEl = card.querySelector('.card-spec')
+    const stage = card.querySelector('.preview-stage')
+    if (!specEl || !stage) return
+    const anims = stage.getAnimations({ subtree: true })
+    if (!anims.length) { specEl.textContent = '' ; return }
+    let longest = anims[0]
+    for (const a of anims) {
+      const d = a.effect?.getTiming().duration || 0
+      if (d > (longest.effect?.getTiming().duration || 0)) longest = a
+    }
+    const t = longest.effect.getTiming()
+    const dur = typeof t.duration === 'number' ? `${(t.duration / 1000).toFixed(t.duration % 1000 === 0 ? 0 : 1)}s` : ''
+    const iter = t.iterations === Infinity ? '∞' : `×${t.iterations}`
+    let ease = ''
+    const target = longest.effect.target
+    if (target) {
+      const style = getComputedStyle(target)
+      const names = style.animationName.split(', ')
+      const easings = style.animationTimingFunction.split(/,(?![^(]*\))/).map(s => s.trim())
+      const i = names.indexOf(longest.animationName)
+      ease = easings[i >= 0 && i < easings.length ? i : 0] || ''
+      ease = ease.replace(/^cubic-bezier\(([^)]*)\)$/, (m, args) =>
+        `cubic(${args.split(',').map(n => String(Number(Number(n).toFixed(2)))).join(',')})`)
+    }
+    specEl.textContent = [dur, ease, iter].filter(Boolean).join(' · ')
   })
 }
 
 /* ── Render Catalog ─────────────────────────────────────────── */
 function renderCatalog() {
-  const query = searchInput.value.trim().toLowerCase()
-  const filtered = motions.filter(motion => {
-    return matchesTarget(motion) && matchesCategory(motion) && matchesUseCase(motion) && matchesCluster(motion) && matchesSearch(motion, query)
-  })
+  const query = currentQuery()
+  const filtered = motions.filter(motion =>
+    matchesTarget(motion) && matchesCategory(motion) && matchesSearch(motion, query)
+  )
 
-  totalCount.textContent = filtered.length
+  resultCount.innerHTML = `<strong>${filtered.length}</strong> / ${motions.length}`
 
   if (!filtered.length) {
     grid.innerHTML = ''
@@ -1014,150 +886,160 @@ function renderCatalog() {
   }
   emptyState.setAttribute('hidden', '')
 
-  grid.dataset.replay = String(replayKey)
   grid.innerHTML = filtered.map((motion, index) => {
-    const delay = Math.min(index * 16, 240)
+    const delay = Math.min(index * 14, 220)
     const preview = shouldAnimate()
       ? renderPreview(motion)
       : `<div class="preview-stage preview-stage--paused" aria-label="モーションプレビュー停止中"></div>`
-    return `<article class="motion-card" style="--card-delay: ${delay}ms" data-category="${motion.category}">
-      <div class="card-header">
-        <div class="card-meta">
-          <span class="card-target">${targetLabel(motion.targets[0])}</span>
-          <span class="card-category">${motion.category}</span>
-          <span class="card-cluster">${clusterLabel(motion.cluster)}</span>
-          <span class="card-num">${String(index + 1).padStart(3, '0')}</span>
-        </div>
-        <h2>
-          <span class="card-name-jp">${motion.jpName}</span>
-          <span class="card-name-en">${motion.name}</span>
-        </h2>
-      </div>
+    return `<article class="motion-card" style="--card-delay: ${delay}ms" data-id="${motion.id}" data-category="${motion.category}">
+      <header class="card-top">
+        <span class="card-num">${String(motion.id).padStart(3, '0')}</span>
+        <span class="card-cat">${motion.category}</span>
+        <span class="card-target">${targetLabel(motion.targets[0])}</span>
+        <button class="card-replay" type="button" data-replay aria-label="このモーションを再生し直す" title="Replay">
+          <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M2 7a5 5 0 1 0 1-3.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M2 2.5v3h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </header>
       ${preview}
-      <dl class="card-body">
-        <div>
-          <dt>向いているUI</dt>
-          <dd>${motion.useFor}</dd>
-        </div>
-        <div>
-          <dt>指示文 <span class="copy-hint">↓ クリックでコピー</span></dt>
-          <dd
-            class="request-text"
-            role="button"
-            tabindex="0"
-            data-request="${motion.request.replace(/"/g, '&quot;')}"
-            title="クリックで指示文をコピー"
-          >${motion.request}</dd>
-        </div>
-      </dl>
-      <code class="card-class">.${motion.className}</code>
+      <div class="card-body">
+        <h2 class="card-title">
+          <span class="card-name-en">${motion.name}</span>
+          <span class="card-name-jp">${motion.jpName}</span>
+        </h2>
+        <p class="card-use">${motion.useFor}</p>
+        <button
+          class="request-text"
+          type="button"
+          data-request="${motion.request.replace(/"/g, '&quot;')}"
+          title="クリックで指示文をコピー"
+        ><span class="request-text__label">指示文</span>${motion.request}</button>
+      </div>
+      <footer class="card-foot">
+        <code class="card-spec" title="実測 duration / easing / iterations"></code>
+        <button class="copy-css" type="button" data-css="${motion.className}" title="このモーションのCSSをコピー">
+          <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <rect x="4.5" y="4.5" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M9.5 4.5v-2a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2" stroke="currentColor" stroke-width="1.4"/>
+          </svg>
+          .${motion.className}
+        </button>
+      </footer>
     </article>`
   }).join('')
 
-  // Event delegation for copy
-  grid.querySelectorAll('.request-text').forEach(el => {
-    el.addEventListener('click', () => copyRequest(el.dataset.request))
-    el.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault()
-        copyRequest(el.dataset.request)
-      }
-    })
-  })
-
-  // IntersectionObserver for animation pausing
-  if (shouldAnimate()) setupObserver()
+  if (shouldAnimate()) {
+    setupObserver()
+    afterAnimationsStart()
+  }
 }
 
-/* ── Search (debounced) ─────────────────────────────────────── */
+/* getAnimations() flushes style, so freshly inserted previews are
+   already readable (specs) and retimable (speed) synchronously. */
+function afterAnimationsStart() {
+  if (speedRate !== 1) applySpeed()
+  fillSpecs()
+}
+
+function refresh() {
+  createTargetFilters()
+  createCategoryFilters()
+  renderCatalog()
+  writeStateToURL()
+}
+
+/* ── Grid interactions (event delegation) ───────────────────── */
+grid.addEventListener('click', e => {
+  const requestBtn = e.target.closest('.request-text')
+  if (requestBtn) {
+    copyText(requestBtn.dataset.request, '指示文をコピーしました ✓')
+    return
+  }
+  const cssBtn = e.target.closest('.copy-css')
+  if (cssBtn) {
+    const css = extractMotionCSS(cssBtn.dataset.css)
+    if (css) copyText(css, 'CSSをコピーしました ✓')
+    else showToast('CSSを抽出できませんでした')
+    return
+  }
+  const replayBtn = e.target.closest('[data-replay]')
+  if (replayBtn) {
+    const card = replayBtn.closest('.motion-card')
+    const motion = motions.find(m => m.id === Number(card.dataset.id))
+    const stage = card.querySelector('.preview-stage')
+    if (motion && stage && shouldAnimate()) {
+      const wrap = document.createElement('div')
+      wrap.innerHTML = renderPreview(motion)
+      stage.replaceWith(wrap.firstElementChild)
+      afterAnimationsStart()
+    }
+  }
+})
+
+/* ── Search ─────────────────────────────────────────────────── */
 let searchTimer
 searchInput.addEventListener('input', () => {
   clearTimeout(searchTimer)
-  searchTimer = setTimeout(renderCatalog, SEARCH_DEBOUNCE)
+  searchClear.hidden = !searchInput.value
+  searchTimer = setTimeout(refresh, SEARCH_DEBOUNCE)
 })
 
-/* ── Filter click ───────────────────────────────────────────── */
+searchClear.addEventListener('click', () => {
+  searchInput.value = ''
+  searchClear.hidden = true
+  searchInput.focus()
+  refresh()
+})
+
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    searchInput.value = ''
+    searchClear.hidden = true
+    refresh()
+    searchInput.blur()
+  }
+})
+
+document.addEventListener('keydown', e => {
+  const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName || '')
+  if ((e.key === '/' && !typing) || ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k')) {
+    e.preventDefault()
+    searchInput.focus()
+    searchInput.select()
+  }
+})
+
+/* ── Filter clicks ──────────────────────────────────────────── */
 targetEl.addEventListener('click', e => {
   const btn = e.target.closest('button[data-target]')
   if (!btn) return
   activeTarget = btn.dataset.target
-  activeUseCase = 'All'
-  activeCluster = 'All'
-  activeCategory = 'All'
-  updateFilterVisibility()
-  createTargetFilters()
-  createFilters()
-  createUseCaseFilters()
-  createClusterFilters()
-  createSummary()
-  renderCatalog()
+  refresh()
 })
 
 filtersEl.addEventListener('click', e => {
   const btn = e.target.closest('button[data-category]')
   if (!btn) return
   activeCategory = btn.dataset.category
-  updateFilterVisibility()
-  createTargetFilters()
-  createFilters()
-  createUseCaseFilters()
-  createClusterFilters()
-  createSummary()
-  renderCatalog()
+  refresh()
 })
 
-useCaseEl.addEventListener('click', e => {
-  const btn = e.target.closest('button[data-use-case]')
-  if (!btn) return
-  activeUseCase = btn.dataset.useCase
-  updateFilterVisibility()
-  createTargetFilters()
-  createFilters()
-  createUseCaseFilters()
-  createClusterFilters()
-  createSummary()
-  renderCatalog()
+/* ── Reset / Replay ─────────────────────────────────────────── */
+resetBtn.addEventListener('click', () => {
+  activeTarget = 'All'
+  activeCategory = 'All'
+  searchInput.value = ''
+  searchClear.hidden = true
+  refresh()
 })
 
-clusterEl.addEventListener('click', e => {
-  const btn = e.target.closest('button[data-cluster]')
-  if (!btn) return
-  activeCluster = btn.dataset.cluster
-  updateFilterVisibility()
-  createTargetFilters()
-  createFilters()
-  createUseCaseFilters()
-  createClusterFilters()
-  createSummary()
-  renderCatalog()
-})
-
-/* ── Summary click ──────────────────────────────────────────── */
-summaryStrip.addEventListener('click', e => {
-  const btn = e.target.closest('button[data-category]')
-  if (!btn) return
-  activeCategory = btn.dataset.category
-  updateFilterVisibility()
-  createTargetFilters()
-  createFilters()
-  createUseCaseFilters()
-  createClusterFilters()
-  createSummary()
-  renderCatalog()
-  window.scrollTo({ top: 0, behavior: 'smooth' })
-})
-
-/* ── Replay All ─────────────────────────────────────────────── */
 replayAllBtn.addEventListener('click', () => {
-  replayKey += 1
   renderCatalog()
 })
 
 /* ── Init ───────────────────────────────────────────────────── */
-updateFilterVisibility()
-createTargetFilters()
-createFilters()
-createUseCaseFilters()
-createClusterFilters()
-createSummary()
-renderCatalog()
+readStateFromURL()
+searchClear.hidden = !searchInput.value
+refresh()
