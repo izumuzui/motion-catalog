@@ -1,8 +1,8 @@
 # Motion Catalog
 
-**A searchable vocabulary of UI motion.** 224 animation patterns across 19 categories — each with a name, a live CSS preview, real timing specs, a ready-to-paste request prompt, and one-click copyable CSS.
+**A searchable vocabulary of UI motion.** 500 animation patterns across 20 categories — each with a name, a live CSS preview, real timing specs, a ready-to-paste request prompt, and one-click copyable CSS. 271 original patterns, plus the complete vocabularies of Animate.css, Hover.css, SpinKit, and CSShake under their official class names.
 
-![motions](https://img.shields.io/badge/motions-224-ff4f18) ![categories](https://img.shields.io/badge/categories-19-1c1815) ![stack](https://img.shields.io/badge/dependencies-0-6f675e) ![license](https://img.shields.io/badge/license-MIT-2563eb)
+![motions](https://img.shields.io/badge/motions-500-ff4f18) ![categories](https://img.shields.io/badge/categories-20-1c1815) ![runtime deps](https://img.shields.io/badge/runtime%20deps-0-6f675e) ![license](https://img.shields.io/badge/license-MIT-2563eb)
 
 **[Live demo →](https://izumuzui.github.io/motion-catalog/)**
 
@@ -36,7 +36,7 @@ Motion Catalog gives every common UI motion a name you can point at.
 
 ## Getting started
 
-It's a fully static site — no build step, no framework, zero runtime dependencies.
+It's a fully static site — no build step, no framework, no runtime JavaScript dependencies (the vendored CSS libraries are plain stylesheets).
 
 ```sh
 git clone https://github.com/izumuzui/motion-catalog.git
@@ -49,14 +49,27 @@ Or just open `index.html` in a browser.
 
 ## Categories
 
-Entrance · Exit · Emphasis · Feedback · Loading · Navigation · List · Layout · Gesture · Reveal · Scroll · Text · Button · Input · Cursor · Menu · Media · Data · Visual
+Entrance · Exit · Emphasis · Feedback · Loading · Navigation · List · Layout · Gesture · Reveal · Scroll · Text · Button · Input · Cursor · Menu · Media · Data · Visual · Hover
+
+## What's inside
+
+| Source | Patterns | Notes |
+| --- | --- | --- |
+| **Original** | 271 | Component-level motions: buttons, inputs, lists, charts, loaders, navigation, text, visual effects |
+| [Animate.css](https://animate.style/) v4.1.1 | 97 | The classic entrance / exit / attention set, under official `animate__*` class names |
+| [Hover.css](https://ianlunn.github.io/Hover/) v2.3.2 | 110 | Hover transitions (`hvr-*`), auto-played in previews |
+| [SpinKit](https://tobiasahlin.com/spinkit/) v2.0.1 | 12 | Loading spinners (`sk-*`) |
+| [CSShake](https://elrumordelaluz.github.io/csshake/) v1.7.0 | 10 | Shake variants (`shake-*`) |
+
+Vendored libraries live in [`vendor/`](vendor/) unmodified except a marked preview-autoplay shim in `hover.css`; all are MIT licensed by their respective authors.
 
 ## Project layout
 
 ```
 index.html   structure and markup
-styles.css   design system + all 224 motion previews and keyframes
+styles.css   design system + original motion previews and keyframes
 app.js       data, rendering, search, filtering, CSS extraction
+vendor/      Animate.css, Hover.css, SpinKit, CSShake (MIT)
 ```
 
 ## Contributing
@@ -77,7 +90,7 @@ Bug reports and ideas via [issues](https://github.com/izumuzui/motion-catalog/is
 
 ## 日本語
 
-**UIモーションの語彙集。** 224種類の動きに「名前・用途・指示文・ライブプレビュー・コピーできるCSS」を付けたカタログです。
+**UIモーションの語彙集。** 500種類の動きに「名前・用途・指示文・ライブプレビュー・コピーできるCSS」を付けたカタログです。オリジナル271種に加え、Animate.css / Hover.css / SpinKit / CSShake の全パターンを公式クラス名のまま収録しています。
 
 「なめらかにして」ではなく「**スプリングインで出して**」「**削除は破壊的ステップにして**」と、正確な語彙で依頼できるようにします。デザイナーへの依頼にも、AIコーディングツールへの指示にもそのまま使えます。
 

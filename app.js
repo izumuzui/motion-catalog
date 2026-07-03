@@ -10,7 +10,7 @@ const SEARCH_DEBOUNCE = 120
 const categories = [
   'Entrance','Exit','Emphasis','Feedback','Loading','Navigation',
   'List','Layout','Gesture','Reveal','Scroll','Text','Button',
-  'Input','Cursor','Menu','Media','Data','Visual',
+  'Input','Cursor','Menu','Media','Data','Visual','Hover',
 ]
 
 const targets = [
@@ -254,12 +254,308 @@ const motions = [
   ['Signal Bars','シグナルバー','Data','接続強度、音量レベル、稼働状況','シグナルバーが順に立ち上がるようにして','signal-bars','bars'],
   ['Card Shuffle','カードシャッフル','Layout','デッキ、ランダム表示、抽選','カードが切り直されるシャッフルにして','card-shuffle','deck'],
   ['Breathing Backdrop','呼吸背景','Visual','瞑想アプリ、待機画面、オンボーディング','背景がゆっくり呼吸するように明滅させて','breath-backdrop','panel'],
-].map(([name, jpName, category, useFor, request, className, preview], index) =>
-  ({ id: index + 1, name, jpName, category, useFor, request, className, preview })
+
+  /* ── v2.1 additions ── */
+  ['Dual Ring Spinner','デュアルリング','Loading','同期、送信、汎用ローディング','二重リングが逆回転するスピナーにして','dual-ring','custom',
+    '<div class="preview-motion dual-ring pv-dual-ring"><span></span><i></i></div>'],
+  ['Comet Spinner','コメットスピナー','Loading','AI生成、検索、軽い待機','尾を引くコメット型スピナーにして','comet-spin','custom',
+    '<div class="preview-motion comet-spin pv-comet"></div>'],
+  ['Dots Circle','ドットサークル','Loading','アプリ起動、同期、待機','円周上のドットが順に光るローダーにして','dots-circle','custom',
+    `<div class="preview-motion dots-circle pv-dots-circle">${Array.from({length:8},()=>'<span></span>').join('')}</div>`],
+  ['Hourglass Flip','砂時計フリップ','Loading','長い処理、レポート生成','砂時計が反転するローディングにして','hourglass-flip','custom',
+    '<div class="preview-motion hourglass-flip pv-hourglass"></div>'],
+  ['Bar Staircase','バー階段','Loading','分析中、集計中','バーが階段状に上がるローダーにして','bar-staircase','custom',
+    '<div class="preview-motion bar-staircase pv-staircase"><span></span><span></span><span></span><span></span></div>'],
+  ['Dots Conveyor','ドットコンベア','Loading','転送中、アップロード、同期','ドットが流れるコンベア式ローダーにして','dots-conveyor','custom',
+    '<div class="preview-motion dots-conveyor pv-conveyor"><span></span><span></span><span></span><span></span></div>'],
+  ['Striped Progress','ストライプ進捗','Loading','ビルド、コピー、長時間処理','進捗バーに流れる斜めストライプを入れて','progress-striped','custom',
+    '<div class="preview-motion progress-striped pv-striped"><span></span></div>'],
+  ['Battery Charge','バッテリー充電','Loading','充電中、蓄積、達成度','バッテリーのセグメントが順に満ちるようにして','battery-charge','custom',
+    '<div class="preview-motion battery-charge pv-battery"><span></span><span></span><span></span><i></i></div>'],
+  ['Radar Sweep','レーダースイープ','Loading','検索中、スキャン、探索','レーダーが掃引して点が見つかる動きにして','radar-sweep','custom',
+    '<div class="preview-motion radar-sweep pv-radar"><span></span><i></i></div>'],
+  ['Donut Chart Draw','ドーナツ描画','Data','構成比、進捗、ダッシュボード','ドーナツチャートが描かれるようにして','donut-draw','custom',
+    '<div class="preview-motion donut-draw pv-donut"><svg viewBox="0 0 52 52" aria-hidden="true"><circle class="pv-donut-track" cx="26" cy="26" r="20"/><circle class="pv-donut-arc" cx="26" cy="26" r="20"/></svg><b>64%</b></div>'],
+  ['Area Chart Fill','エリアチャート','Data','推移、累計、トレンド','エリアチャートが下から満ちるようにして','area-fill','custom',
+    '<div class="preview-motion area-fill pv-area"><span></span></div>'],
+  ['KPI Delta Pop','KPIデルタ','Data','前週比、増減表示、ダッシュボード','増減の矢印と差分がポップして出るようにして','kpi-delta','custom',
+    '<div class="preview-motion kpi-delta pv-kpi"><span>1,284</span><i>▲ 12%</i></div>'],
+  ['Row Highlight Update','行更新ハイライト','Data','リアルタイム更新、株価、順位','更新された行だけハイライトが走るようにして','row-update','custom',
+    '<div class="preview-motion row-update pv-rows"><span></span><span></span><span></span></div>'],
+  ['Candle Grow','ローソク足成長','Data','株価、レンジ、比較','ローソク足が中央から伸びるようにして','candle-grow','custom',
+    '<div class="preview-motion candle-grow pv-candles"><span></span><span></span><span></span><span></span><span></span></div>'],
+  ['Percent Ring','パーセントリング','Data','達成率、スコア、使用量','リングが達成率まで描かれるようにして','percent-ring','custom',
+    '<div class="preview-motion percent-ring pv-donut pv-donut--partial"><svg viewBox="0 0 52 52" aria-hidden="true"><circle class="pv-donut-track" cx="26" cy="26" r="20"/><circle class="pv-donut-arc" cx="26" cy="26" r="20"/></svg><b>82</b></div>'],
+  ['Border Beam','ボーダービーム','Button','注目CTA、プレミアム、新機能','ボタンの枠を光が一周するようにして','border-beam','custom',
+    '<div class="preview-motion border-beam pv-beam"><span>Upgrade</span></div>'],
+  ['Gradient Sweep Button','グラデスイープ','Button','主要CTA、キャンペーン','ボタン背景のグラデーションを流して','btn-gradient-sweep','custom',
+    '<button class="preview-motion btn-gradient-sweep pv-grad-btn" type="button">Get started</button>'],
+  ['Arrow Nudge','アローナッジ','Button','次へ、続きを読む、送る導線','ボタンの矢印が繰り返し右へナッジするようにして','arrow-nudge','custom',
+    '<button class="preview-motion arrow-nudge pv-arrow-btn" type="button">Continue<span>→</span></button>'],
+  ['Glow Pulse CTA','グローパルス','Button','最重要CTA、開始ボタン','ボタンの外側にグローが脈打つようにして','glow-pulse','custom',
+    '<button class="preview-motion glow-pulse pv-glow-btn" type="button">Start</button>'],
+  ['Button Shine','ボタンシャイン','Button','購入、登録、特別なアクション','ボタンに斜めの光が走るようにして','btn-shine','custom',
+    '<button class="preview-motion btn-shine pv-shine-btn" type="button">Buy now</button>'],
+  ['Number Stepper','数値ステッパー','Input','数量選択、人数、期間','ステッパーの数字がバンプして増減するようにして','number-stepper','custom',
+    '<div class="preview-motion number-stepper pv-stepper-input"><span>−</span><b>12</b><span>＋</span></div>'],
+  ['Strength Meter','強度メーター','Input','パスワード強度、品質スコア','強度メーターが段階的に色付くようにして','strength-meter','custom',
+    '<div class="preview-motion strength-meter pv-strength"><span>••••••••</span><div><i></i><i></i><i></i></div></div>'],
+  ['Tag Enter','タグ確定','Input','タグ入力、宛先、キーワード','入力テキストがEnterでチップに変わるようにして','tag-enter','custom',
+    '<div class="preview-motion tag-enter pv-tag-enter"><span>design</span><i>design</i></div>'],
+  ['Search Suggest','検索サジェスト','Input','検索補完、コマンド、住所','サジェスト候補の選択が上下に移動するようにして','search-suggest','custom',
+    '<div class="preview-motion search-suggest pv-suggest"><span></span><ul><li>Tokyo</li><li>Toronto</li><li>Turin</li></ul></div>'],
+  ['Input Clear Wipe','入力クリア','Input','検索リセット、フォームクリア','クリアボタンで文字が拭き取られるようにして','input-clear','custom',
+    '<div class="preview-motion input-clear pv-clear"><span>motion catalog</span><i>×</i></div>'],
+  ['Card Shine','カードシャイン','List','商品カード、特集、レアアイテム','カードに光が走るシャインを入れて','card-shine','custom',
+    '<div class="preview-motion card-shine pv-card-shine"><span></span><i></i><b></b></div>'],
+  ['Swipe Reveal Actions','スワイプアクション','List','メール、タスク、通知の操作','行をスワイプすると操作ボタンが現れるようにして','swipe-reveal','custom',
+    '<div class="preview-motion swipe-reveal pv-swipe-row"><b></b><span></span></div>'],
+  ['Drag Reorder Demo','ドラッグ並べ替え','List','優先順位、プレイリスト、手順','行を持ち上げて並べ替える動きを見せて','drag-reorder','custom',
+    '<div class="preview-motion drag-reorder pv-reorder"><span></span><span></span><span></span></div>'],
+  ['Notification Collapse','通知集約','List','通知センター、グループ化','複数の通知が一枚に集約されるようにして','notif-collapse','custom',
+    '<div class="preview-motion notif-collapse pv-notif-stack"><span></span><span></span><span></span></div>'],
+  ['List Load More','リスト追加読込','List','無限スクロール、もっと見る','末尾のプレースホルダが実データに変わるようにして','list-load-more','custom',
+    '<div class="preview-motion list-load-more pv-loadmore"><span></span><span></span><i></i></div>'],
+  ['Dock Magnify','ドック拡大','Navigation','ドック、ツールバー、ランチャー','ホバー位置のアイコンが拡大するドックにして','dock-magnify','custom',
+    '<div class="preview-motion dock-magnify pv-dock"><span></span><span></span><span></span><span></span><span></span></div>'],
+  ['Sidebar Collapse','サイドバー開閉','Navigation','管理画面、エディタ、設定','サイドバーがアイコン幅まで畳まれるようにして','sidebar-collapse','custom',
+    '<div class="preview-motion sidebar-collapse pv-sidebar"><nav><i></i><i></i><i></i></nav><main></main></div>'],
+  ['Tab Pill Morph','タブピルモーフ','Navigation','タブ、セグメント、期間切替','ピルが伸び縮みしながらタブ間を移動するようにして','tab-pill-morph','custom',
+    '<div class="preview-motion tab-pill-morph pv-pill-tabs"><i></i><span>Day</span><span>Week</span><span>Month</span></div>'],
+  ['Header Shrink','ヘッダー縮小','Navigation','スクロール時のヘッダー、アプリバー','スクロールでヘッダーがコンパクトになるようにして','header-shrink','custom',
+    '<div class="preview-motion header-shrink pv-header-shrink"><header><b></b><span></span></header><main><i></i><i></i><i></i></main></div>'],
+  ['Text Blur In','テキストブラーイン','Text','ヒーローコピー、見出し','文字がぼけた状態からピントが合うようにして','text-blur-in','custom',
+    '<div class="preview-motion text-blur-in pv-text">Focus</div>'],
+  ['Text Wave','テキストウェーブ','Text','ロゴ、遊びのある見出し','文字が波打つように順に跳ねるようにして','text-wave','custom',
+    '<div class="preview-motion text-wave pv-text-chars"><span>W</span><span>a</span><span>v</span><span>e</span><span>!</span></div>'],
+  ['Char Pop','文字ポップ','Text','タイトル、達成メッセージ','一文字ずつポップして現れるようにして','char-pop','custom',
+    '<div class="preview-motion char-pop pv-text-chars"><span>P</span><span>o</span><span>p</span><span>!</span></div>'],
+  ['Strike Complete','取り消し完了','Text','タスク完了、チェックリスト','完了時に取り消し線が引かれて薄くなるようにして','strike-complete','custom',
+    '<div class="preview-motion strike-complete pv-strike"><i></i><span>Write the docs</span></div>'],
+  ['Error Border Pulse','エラーボーダーパルス','Feedback','入力エラー、必須項目','エラー欄の枠が赤くパルスするようにして','error-border-pulse','custom',
+    '<div class="preview-motion error-border-pulse pv-error-input"><span></span></div>'],
+  ['Undo Timer','取り消しタイマー','Feedback','削除の取り消し、送信取り消し','スナックバーの残り時間が減っていくようにして','undo-timer','custom',
+    '<div class="preview-motion undo-timer pv-undo"><span>Deleted</span><b>Undo</b><i></i></div>'],
+  ['Save Flash','保存フラッシュ','Feedback','自動保存、下書き保存','保存された瞬間に小さくフラッシュ表示して','save-flash','custom',
+    '<div class="preview-motion save-flash pv-save"><span></span><i>Saved ✓</i></div>'],
+  ['Double Tap Like','ダブルタップいいね','Feedback','写真、フィード、リール','ダブルタップでハートが弾けるようにして','double-tap-like','custom',
+    '<div class="preview-motion double-tap-like pv-dtap"><span></span><i></i></div>'],
+  ['Border Rotate','ボーダー回転','Visual','特集カード、AI機能、注目枠','グラデーションの枠がゆっくり回転するようにして','border-rotate','custom',
+    '<div class="preview-motion border-rotate pv-border-rotate"><span></span></div>'],
+  ['Holo Shine','ホロシャイン','Visual','カード、バッジ、レアリティ演出','ホログラムのような光沢が動くようにして','holo-shine','custom',
+    '<div class="preview-motion holo-shine pv-holo"></div>'],
+  ['Grain Drift','グレインドリフト','Visual','背景、フィルム風、質感','粒子ノイズが漂う質感を入れて','grain-drift','custom',
+    '<div class="preview-motion grain-drift pv-grain"><span></span></div>'],
+  ['Spotlight Sweep','スポットライトスイープ','Visual','ダークヒーロー、発表演出','暗いカードを光の帯が横切るようにして','spotlight-sweep','custom',
+    '<div class="preview-motion spotlight-sweep pv-spot-sweep"><span></span></div>'],
+  ['Duotone Fade','デュオトーンフェード','Media','ギャラリー、アートワーク、特集','画像のデュオトーンが切り替わるようにして','duotone-fade','custom',
+    '<div class="preview-motion duotone-fade pv-duotone"><span></span></div>'],
+].map(([name, jpName, category, useFor, request, className, preview, html]) =>
+  ({ name, jpName, category, useFor, request, className, preview, html })
 )
 
+/* ════════════════════════════════════════════════════════════
+   Vendored library motions (see /vendor, all MIT licensed).
+   Entries are generated from the official class lists so the
+   catalog can reference the real, copyable class names.
+════════════════════════════════════════════════════════════ */
+
+/* ── Animate.css v4.1.1 ── */
+const ANIMATE_ATTENTION = {
+  bounce: 'バウンス', flash: 'フラッシュ', pulse: 'パルス', rubberBand: 'ラバーバンド',
+  shakeX: '横シェイク', shakeY: '縦シェイク', headShake: 'ヘッドシェイク', swing: 'スイング',
+  tada: 'タダ', wobble: 'ウォブル', jello: 'ジェロー', heartBeat: 'ハートビート',
+}
+const ANIMATE_BASES = {
+  back: 'バック', bounce: 'バウンス', fade: 'フェード', flip: 'フリップ',
+  lightSpeed: 'ライトスピード', rotate: 'ローテート', zoom: 'ズーム', slide: 'スライド', roll: 'ロール',
+}
+const ANIMATE_DIRS = {
+  Up: '上', Down: '下', Left: '左', Right: '右',
+  TopLeft: '左上', TopRight: '右上', BottomLeft: '左下', BottomRight: '右下',
+  UpLeft: '左上', UpRight: '右上', DownLeft: '左下', DownRight: '右下',
+  InRight: '右', InLeft: '左', OutRight: '右', OutLeft: '左', X: 'X軸', Y: 'Y軸',
+}
+const ANIMATE_NAMES = [
+  'bounce','flash','pulse','rubberBand','shakeX','shakeY','headShake','swing','tada','wobble','jello','heartBeat',
+  'backInDown','backInLeft','backInRight','backInUp','backOutDown','backOutLeft','backOutRight','backOutUp',
+  'bounceIn','bounceInDown','bounceInLeft','bounceInRight','bounceInUp',
+  'bounceOut','bounceOutDown','bounceOutLeft','bounceOutRight','bounceOutUp',
+  'fadeIn','fadeInDown','fadeInDownBig','fadeInLeft','fadeInLeftBig','fadeInRight','fadeInRightBig','fadeInUp','fadeInUpBig',
+  'fadeInTopLeft','fadeInTopRight','fadeInBottomLeft','fadeInBottomRight',
+  'fadeOut','fadeOutDown','fadeOutDownBig','fadeOutLeft','fadeOutLeftBig','fadeOutRight','fadeOutRightBig','fadeOutUp','fadeOutUpBig',
+  'fadeOutTopLeft','fadeOutTopRight','fadeOutBottomRight','fadeOutBottomLeft',
+  'flip','flipInX','flipInY','flipOutX','flipOutY',
+  'lightSpeedInRight','lightSpeedInLeft','lightSpeedOutRight','lightSpeedOutLeft',
+  'rotateIn','rotateInDownLeft','rotateInDownRight','rotateInUpLeft','rotateInUpRight',
+  'rotateOut','rotateOutDownLeft','rotateOutDownRight','rotateOutUpLeft','rotateOutUpRight',
+  'hinge','jackInTheBox','rollIn','rollOut',
+  'zoomIn','zoomInDown','zoomInLeft','zoomInRight','zoomInUp',
+  'zoomOut','zoomOutDown','zoomOutLeft','zoomOutRight','zoomOutUp',
+  'slideInDown','slideInLeft','slideInRight','slideInUp',
+  'slideOutDown','slideOutLeft','slideOutRight','slideOutUp',
+]
+
+function animateEntry(name) {
+  let jpName, category
+  if (ANIMATE_ATTENTION[name]) {
+    jpName = ANIMATE_ATTENTION[name]
+    category = 'Emphasis'
+  } else if (name === 'hinge') {
+    jpName = 'ヒンジ'; category = 'Exit'
+  } else if (name === 'jackInTheBox') {
+    jpName = 'ジャックインザボックス'; category = 'Entrance'
+  } else if (name === 'flip') {
+    jpName = 'フリップ'; category = 'Layout'
+  } else {
+    const m = name.match(/^(back|bounce|fade|flip|lightSpeed|rotate|zoom|slide|roll)(In|Out)((?:Down|Up|Left|Right|Top|Bottom|X|Y)*)?(Big)?$/)
+    const base = ANIMATE_BASES[m[1]]
+    const inOut = m[2] === 'In' ? 'イン' : 'アウト'
+    const dir = m[3] ? (ANIMATE_DIRS[m[3]] || m[3]) : ''
+    jpName = `${base}${inOut}${dir}${m[4] ? '(大)' : ''}`
+    category = m[2] === 'In' ? 'Entrance' : 'Exit'
+  }
+  const useFor = {
+    Entrance: 'カード、モーダル、通知の登場',
+    Exit: '閉じる、削除、退場の演出',
+    Emphasis: '注目喚起、通知、リアクション',
+    Layout: 'カード反転、状態の切り替え',
+  }[category]
+  const cls = `animate__${name}`
+  return {
+    name, jpName, category, useFor,
+    request: `Animate.cssの ${name} で動かして`,
+    className: cls,
+    copyClasses: `animate__animated ${cls}`,
+    source: 'Animate.css',
+    html: `<div class="preview-motion lib-box animate__animated animate__infinite ${cls}"></div>`,
+  }
+}
+
+/* ── Hover.css v2.3.2 ── */
+const HOVER_JP = {
+  grow: '拡大', shrink: '縮小', pulse: 'パルス', 'pulse-grow': 'パルス拡大', 'pulse-shrink': 'パルス縮小',
+  push: 'プッシュ', pop: 'ポップ', 'bounce-in': 'バウンスイン', 'bounce-out': 'バウンスアウト',
+  rotate: '回転', 'grow-rotate': '拡大回転', float: 'フロート', sink: 'シンク', bob: 'ボブ', hang: 'ハング',
+  skew: 'スキュー', 'skew-forward': '前傾スキュー', 'skew-backward': '後傾スキュー',
+  'wobble-vertical': '縦ウォブル', 'wobble-horizontal': '横ウォブル',
+  'wobble-to-bottom-right': '右下ウォブル', 'wobble-to-top-right': '右上ウォブル',
+  'wobble-top': '上ウォブル', 'wobble-bottom': '下ウォブル', 'wobble-skew': 'スキューウォブル',
+  buzz: 'バズ振動', 'buzz-out': 'バズアウト', forward: '前進', backward: '後退',
+  fade: 'フェード', 'back-pulse': 'バックパルス',
+  'sweep-to-right': '右スイープ', 'sweep-to-left': '左スイープ', 'sweep-to-bottom': '下スイープ', 'sweep-to-top': '上スイープ',
+  'bounce-to-right': '右バウンス', 'bounce-to-left': '左バウンス', 'bounce-to-bottom': '下バウンス', 'bounce-to-top': '上バウンス',
+  'radial-out': '放射アウト', 'radial-in': '放射イン', 'rectangle-in': '矩形イン', 'rectangle-out': '矩形アウト',
+  'shutter-in-horizontal': '横シャッターイン', 'shutter-out-horizontal': '横シャッターアウト',
+  'shutter-in-vertical': '縦シャッターイン', 'shutter-out-vertical': '縦シャッターアウト',
+  'border-fade': '枠線フェード', hollow: 'ホロウ', trim: 'トリム',
+  'ripple-out': 'リップルアウト', 'ripple-in': 'リップルイン', 'outline-out': 'アウトラインアウト', 'outline-in': 'アウトラインイン',
+  'round-corners': '角丸化', 'underline-from-left': '下線(左から)', 'underline-from-center': '下線(中央から)',
+  'underline-from-right': '下線(右から)', 'overline-from-left': '上線(左から)', 'overline-from-center': '上線(中央から)',
+  'overline-from-right': '上線(右から)', reveal: '枠リビール', 'underline-reveal': '下線リビール', 'overline-reveal': '上線リビール',
+  glow: 'グロー', shadow: 'シャドウ', 'grow-shadow': '拡大シャドウ',
+  'box-shadow-outset': '外シャドウ', 'box-shadow-inset': '内シャドウ', 'float-shadow': '浮遊シャドウ', 'shadow-radial': '放射シャドウ',
+  'bubble-top': '吹き出し上', 'bubble-right': '吹き出し右', 'bubble-bottom': '吹き出し下', 'bubble-left': '吹き出し左',
+  'bubble-float-top': '浮遊吹き出し上', 'bubble-float-right': '浮遊吹き出し右',
+  'bubble-float-bottom': '浮遊吹き出し下', 'bubble-float-left': '浮遊吹き出し左',
+  'icon-back': 'アイコン後退', 'icon-forward': 'アイコン前進', 'icon-down': 'アイコン下', 'icon-up': 'アイコン上',
+  'icon-spin': 'アイコンスピン', 'icon-drop': 'アイコンドロップ', 'icon-fade': 'アイコンフェード',
+  'icon-float-away': 'アイコン飛去', 'icon-sink-away': 'アイコン沈下消失', 'icon-grow': 'アイコン拡大',
+  'icon-shrink': 'アイコン縮小', 'icon-pulse': 'アイコンパルス', 'icon-pulse-grow': 'アイコンパルス拡大',
+  'icon-pulse-shrink': 'アイコンパルス縮小', 'icon-push': 'アイコンプッシュ', 'icon-pop': 'アイコンポップ',
+  'icon-bounce': 'アイコンバウンス', 'icon-rotate': 'アイコン回転', 'icon-grow-rotate': 'アイコン拡大回転',
+  'icon-float': 'アイコンフロート', 'icon-sink': 'アイコンシンク', 'icon-bob': 'アイコンボブ', 'icon-hang': 'アイコンハング',
+  'icon-wobble-horizontal': 'アイコン横ウォブル', 'icon-wobble-vertical': 'アイコン縦ウォブル',
+  'icon-buzz': 'アイコンバズ', 'icon-buzz-out': 'アイコンバズアウト',
+  'curl-top-left': 'カール左上', 'curl-top-right': 'カール右上',
+  'curl-bottom-right': 'カール右下', 'curl-bottom-left': 'カール左下',
+}
+
+function hoverEntry(name) {
+  const cls = `hvr-${name}`
+  let html, useFor
+  if (name.startsWith('icon-')) {
+    useFor = 'アイコン付きボタン、リンクのホバー'
+    html = `<button class="preview-motion lib-btn ${cls}" type="button">Next <span class="hvr-icon lib-icon">➔</span></button>`
+  } else if (name.startsWith('bubble-')) {
+    useFor = 'ツールチップ、吹き出しのホバー表示'
+    html = `<div class="preview-motion lib-card ${cls}"></div>`
+  } else if (name.startsWith('curl-')) {
+    useFor = 'ページカール、めくり演出'
+    html = `<div class="preview-motion lib-card ${cls}"></div>`
+  } else {
+    useFor = 'ボタン、リンク、カードのホバー'
+    html = `<button class="preview-motion lib-btn ${cls}" type="button">Hover</button>`
+  }
+  return {
+    name: cls, jpName: `ホバー: ${HOVER_JP[name] || name}`, category: 'Hover', useFor,
+    request: `Hover.cssの ${name} をホバー効果に使って`,
+    className: cls,
+    copyClasses: cls,
+    source: 'Hover.css',
+    html,
+  }
+}
+
+const HOVER_NAMES = Object.keys(HOVER_JP)
+
+/* ── SpinKit v2.0.1 ── */
+const SPINKIT = [
+  ['plane', 'プレーン', '<div class="sk-plane"></div>'],
+  ['chase', 'チェイス', `<div class="sk-chase">${'<div class="sk-chase-dot"></div>'.repeat(6)}</div>`],
+  ['bounce', 'バウンス', `<div class="sk-bounce">${'<div class="sk-bounce-dot"></div>'.repeat(2)}</div>`],
+  ['wave', 'ウェーブ', `<div class="sk-wave">${'<div class="sk-wave-rect"></div>'.repeat(5)}</div>`],
+  ['pulse', 'パルス', '<div class="sk-pulse"></div>'],
+  ['flow', 'フロー', `<div class="sk-flow">${'<div class="sk-flow-dot"></div>'.repeat(3)}</div>`],
+  ['swing', 'スウィング', `<div class="sk-swing">${'<div class="sk-swing-dot"></div>'.repeat(2)}</div>`],
+  ['circle', 'サークル', `<div class="sk-circle">${'<div class="sk-circle-dot"></div>'.repeat(12)}</div>`],
+  ['circle-fade', 'サークルフェード', `<div class="sk-circle-fade">${'<div class="sk-circle-fade-dot"></div>'.repeat(12)}</div>`],
+  ['grid', 'グリッド', `<div class="sk-grid">${'<div class="sk-grid-cube"></div>'.repeat(9)}</div>`],
+  ['fold', 'フォールド', `<div class="sk-fold">${'<div class="sk-fold-cube"></div>'.repeat(4)}</div>`],
+  ['wander', 'ワンダー', `<div class="sk-wander">${'<div class="sk-wander-cube"></div>'.repeat(3)}</div>`],
+]
+
+function spinkitEntry([name, jp, inner]) {
+  // Collect every sk-* class in the markup so Copy CSS includes child rules
+  const innerClasses = [...new Set([...inner.matchAll(/class="([^"]+)"/g)].map(m => m[1]))]
+  return {
+    name: `sk-${name}`, jpName: `SpinKitローダー: ${jp}`, category: 'Loading',
+    useFor: 'ローディング、待機、処理中',
+    request: `SpinKitの ${name} ローダーを使って`,
+    className: `sk-${name}`,
+    copyClasses: innerClasses.join(' '),
+    source: 'SpinKit',
+    html: `<div class="preview-motion lib-spinner">${inner}</div>`,
+  }
+}
+
+/* ── CSShake v1.7.0 ── */
+const CSSHAKE = [
+  ['shake', 'シェイク'], ['shake-slow', 'ゆっくりシェイク'], ['shake-little', '小刻みシェイク'],
+  ['shake-hard', 'ハードシェイク'], ['shake-horizontal', '横シェイク'], ['shake-vertical', '縦シェイク'],
+  ['shake-rotate', '回転シェイク'], ['shake-opacity', '透明シェイク'],
+  ['shake-crazy', 'クレイジーシェイク'], ['shake-chunk', 'チャンクシェイク'],
+]
+
+function csshakeEntry([cls, jp]) {
+  return {
+    name: cls, jpName: `CSShake: ${jp}`, category: 'Feedback',
+    useFor: 'エラー、注意喚起、警告、遊びの演出',
+    request: `CSShakeの ${cls} で揺らして`,
+    className: cls,
+    copyClasses: cls,
+    source: 'CSShake',
+    html: `<div class="preview-motion lib-box ${cls} shake-constant"></div>`,
+  }
+}
+
+ANIMATE_NAMES.forEach(n => motions.push(animateEntry(n)))
+HOVER_NAMES.forEach(n => motions.push(hoverEntry(n)))
+SPINKIT.forEach(row => motions.push(spinkitEntry(row)))
+CSSHAKE.forEach(row => motions.push(csshakeEntry(row)))
+
 function motionText(motion) {
-  return `${motion.name} ${motion.jpName} ${motion.category} ${motion.useFor} ${motion.request} ${motion.className}`.toLowerCase()
+  return `${motion.name} ${motion.jpName} ${motion.category} ${motion.useFor} ${motion.request} ${motion.className} ${motion.source || ''}`.toLowerCase()
 }
 
 function hasAny(text, words) {
@@ -329,7 +625,8 @@ function deriveTargets(motion) {
   return [...tags]
 }
 
-motions.forEach(motion => {
+motions.forEach((motion, index) => {
+  motion.id = index + 1
   motion.targets = deriveTargets(motion)
   motion.haystack = `${motionText(motion)} ${motion.targets
     .map(id => {
@@ -421,17 +718,25 @@ async function copyText(text, okMsg) {
 }
 
 /* ── CSS extraction (Copy CSS) ──────────────────────────────── */
-function extractMotionCSS(className) {
+function extractMotionCSS(classList) {
   const styleRules = []
+  const seen = new Set()
   const keyframeNames = new Set()
-  const clsRe = new RegExp(`\\.${className}(?![\\w-])`)
+  const clsRes = classList.trim().split(/\s+/)
+    .map(cls => new RegExp(`\\.${cls}(?![\\w-])`))
 
   for (const sheet of document.styleSheets) {
     let rules
     try { rules = sheet.cssRules } catch { continue }
     for (const rule of rules) {
-      if (rule instanceof CSSStyleRule && clsRe.test(rule.selectorText)) {
-        styleRules.push(rule.cssText)
+      if (rule instanceof CSSStyleRule && clsRes.some(re => re.test(rule.selectorText))) {
+        // Drop the .hvr-live twin selectors added for preview auto-play
+        const cssText = rule.cssText
+          .replace(/,\s*[^,{]*\.hvr-live[^,{]*(?=[,{])/g, '')
+        if (!seen.has(cssText)) {
+          seen.add(cssText)
+          styleRules.push(cssText)
+        }
         const names = rule.style.getPropertyValue('animation-name') || ''
         names.split(',').forEach(n => {
           const name = n.trim()
@@ -524,6 +829,7 @@ function resolvePreviewType(motion) {
 }
 
 function renderPreview(motion) {
+  if (motion.html) return `<div class="preview-stage">${motion.html}</div>`
   const cls = `preview-motion ${motion.className}`
   switch (resolvePreviewType(motion)) {
     case 'context-button':
@@ -700,9 +1006,9 @@ function renderPreview(motion) {
     case 'deck':
       return `<div class="preview-stage"><div class="${cls} preview-deck"><span></span><span></span><span></span></div></div>`
     case 'check':
-      return `<div class="preview-stage"><div class="${cls} preview-check"><span></span></div></div>`
+      return `<div class="preview-stage"><div class="${cls} preview-check"><svg viewBox="0 0 52 52" aria-hidden="true"><circle class="draw-ring" cx="26" cy="26" r="23"/><path class="draw-mark" d="M15 27.5l7.5 7.5L38 19"/></svg></div></div>`
     case 'xmark':
-      return `<div class="preview-stage"><div class="${cls} preview-xmark"><span></span><i></i></div></div>`
+      return `<div class="preview-stage"><div class="${cls} preview-xmark"><svg viewBox="0 0 52 52" aria-hidden="true"><circle class="draw-ring" cx="26" cy="26" r="23"/><path class="draw-mark draw-mark--1" d="M19 19l14 14"/><path class="draw-mark draw-mark--2" d="M33 19L19 33"/></svg></div></div>`
     case 'dot':
       return `<div class="preview-stage"><div class="${cls} preview-dot"></div></div>`
     case 'circle':
@@ -846,7 +1152,10 @@ function fillSpecs() {
     const stage = card.querySelector('.preview-stage')
     if (!specEl || !stage) return
     const anims = stage.getAnimations({ subtree: true })
-    if (!anims.length) { specEl.textContent = '' ; return }
+    if (!anims.length) {
+      specEl.textContent = stage.querySelector('[class*="hvr-"]') ? ':hover / :focus' : ''
+      return
+    }
     let longest = anims[0]
     for (const a of anims) {
       const d = a.effect?.getTiming().duration || 0
@@ -895,7 +1204,11 @@ function renderCatalog() {
       <header class="card-top">
         <span class="card-num">${String(motion.id).padStart(3, '0')}</span>
         <span class="card-cat">${motion.category}</span>
-        <span class="card-target">${targetLabel(motion.targets[0])}</span>
+        ${motion.source
+          ? `<span class="card-source">${motion.source}</span>`
+          : targetLabel(motion.targets[0]).toLowerCase() !== motion.category.toLowerCase()
+            ? `<span class="card-target">${targetLabel(motion.targets[0])}</span>`
+            : ''}
         <button class="card-replay" type="button" data-replay aria-label="このモーションを再生し直す" title="Replay">
           <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
             <path d="M2 7a5 5 0 1 0 1-3.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
@@ -919,7 +1232,7 @@ function renderCatalog() {
       </div>
       <footer class="card-foot">
         <code class="card-spec" title="実測 duration / easing / iterations"></code>
-        <button class="copy-css" type="button" data-css="${motion.className}" title="このモーションのCSSをコピー">
+        <button class="copy-css" type="button" data-css="${motion.copyClasses || motion.className}" title="このモーションのCSSをコピー">
           <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true">
             <rect x="4.5" y="4.5" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
             <path d="M9.5 4.5v-2a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2" stroke="currentColor" stroke-width="1.4"/>
@@ -1038,6 +1351,13 @@ resetBtn.addEventListener('click', () => {
 replayAllBtn.addEventListener('click', () => {
   renderCatalog()
 })
+
+/* ── Hover.css preview auto-play ────────────────────────────── */
+setInterval(() => {
+  if (!shouldAnimate() || document.hidden) return
+  document.querySelectorAll('.motion-card:not([data-paused]) .preview-motion[class*="hvr-"]')
+    .forEach(el => el.classList.toggle('hvr-live'))
+}, 1400)
 
 /* ── Init ───────────────────────────────────────────────────── */
 readStateFromURL()
