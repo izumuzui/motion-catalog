@@ -6,7 +6,7 @@
 
 **[Live demo →](https://izumuzui.github.io/motion-catalog/)**
 
-<img width="2836" height="1579" alt="image" src="https://github.com/user-attachments/assets/8f7e9fbc-7100-4127-bb11-6730834e7587" />
+<img width="2815" height="1431" alt="image" src="https://github.com/user-attachments/assets/7b621ec4-2d0b-421c-8682-9c370fd65ff4" />
 
 ## Why
 
