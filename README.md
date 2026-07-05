@@ -4,8 +4,6 @@
 
 ![motions](https://img.shields.io/badge/motions-500-ff4f18) ![categories](https://img.shields.io/badge/categories-20-1c1815) ![runtime deps](https://img.shields.io/badge/runtime%20deps-0-6f675e) ![license](https://img.shields.io/badge/license-MIT-2563eb)
 
-**[Live demo →](https://izumuzui.github.io/motion-catalog/)**
-
 <img width="2815" height="1431" alt="image" src="https://github.com/user-attachments/assets/7b621ec4-2d0b-421c-8682-9c370fd65ff4" />
 
 ## Why
