@@ -350,6 +350,108 @@ const motions = [
     '<div class="preview-motion spotlight-sweep pv-spot-sweep"><span></span></div>'],
   ['Duotone Fade','デュオトーンフェード','Media','ギャラリー、アートワーク、特集','画像のデュオトーンが切り替わるようにして','duotone-fade','custom',
     '<div class="preview-motion duotone-fade pv-duotone"><span></span></div>'],
+
+  /* ── v2.2 additions (100) ── */
+  ['Pinch Zoom Out','ピンチズームアウト','Gesture','画像、地図、プレビュー','ピンチアウトで縮小する感じを見せて','pinch-zoom-out','photo'],
+  ['Two Finger Rotate','2本指回転','Gesture','画像編集、地図の回転','2本指で回転させる操作を見せて','two-finger-rotate','photo'],
+  ['Edge Swipe Back','エッジスワイプ','Gesture','戻る操作、ナビゲーション','画面端からのスワイプで戻る動きにして','edge-swipe-back','phone'],
+  ['Swipe To Archive','スワイプアーカイブ','Gesture','メール、タスク一覧','スワイプでアーカイブされる動きにして','swipe-archive','list'],
+  ['Drag Snap Threshold','ドラッグスナップ閾値','Gesture','スライダー、ボトムシート','一定量ドラッグしたらスナップするようにして','drag-snap-threshold','slider'],
+  ['Force Touch Press','強めのプレス','Gesture','プレビュー表示、クイックアクション','強く押し込むとプレビューが持ち上がるようにして','force-touch','card'],
+  ['Flick Dismiss','フリック退場','Gesture','カード評価、通知削除','素早くフリックして消える動きにして','flick-dismiss','card'],
+  ['Two Finger Pan','2本指パン','Gesture','地図、キャンバス操作','2本指でパンする動きを見せて','two-finger-pan','scene'],
+  ['Iris Reveal','アイリスリビール','Reveal','動画導入、注目シーン','円が開いてリビールするようにして','iris-reveal','circle'],
+  ['Letter Mask Reveal','文字マスクリビール','Reveal','見出し、ロゴ表示','文字の形にマスクされて中身が見えるようにして','letter-mask-reveal','text'],
+  ['Diagonal Wipe Reveal','斜めワイプリビール','Reveal','セクション切替、バナー','斜め方向にワイプしてリビールして','diagonal-wipe','panel'],
+  ['Venetian Blinds Reveal','ブラインドリビール','Reveal','画像、特集セクション','ブラインドが開くようにリビールして','venetian-blinds','panel'],
+  ['Puzzle Piece Reveal','パズルリビール','Reveal','ギャラリー、グリッド一覧','パズルのピースが揃うように表示して','puzzle-reveal','grid'],
+  ['Ink Bleed Reveal','インク滲みリビール','Reveal','ブランド見出し、アート系UI','インクが滲むようにリビールして','ink-bleed','panel'],
+  ['Zigzag Reveal','ジグザグリビール','Reveal','バナー、カード','ジグザグ状にリビールして','zigzag-reveal','panel'],
+  ['Pixelate Reveal','ピクセレートリビール','Reveal','画像、デジタル演出','ピクセルが集まって画像になるようにして','pixelate-reveal','photo'],
+  ['Cursor Ring Grow','カーソルリング拡大','Cursor','ホバー領域、インタラクティブ要素','カーソル周りのリングが拡大するようにして','cursor-ring-grow','cursor'],
+  ['Cursor Blend Invert','カーソル反転ブレンド','Cursor','ダークUI、アート系サイト','カーソルが背景色を反転させるようにして','cursor-blend-invert','cursor'],
+  ['Cursor Text Morph','カーソルテキスト変形','Cursor','リンクホバー、詳細を見る','カーソルがテキストラベルに変形するようにして','cursor-text-morph','cursor'],
+  ['Cursor Click Ripple','カーソルクリックリップル','Cursor','クリック演出、フィードバック','クリック位置からリップルが広がるようにして','cursor-click-ripple','cursor'],
+  ['Cursor Magnet Snapback','カーソルマグネット戻り','Cursor','ボタン、アイコンのホバー','離れると弾かれるように戻るマグネット効果にして','cursor-magnet-snapback','trail'],
+  ['Cursor Hide On Type','入力中カーソル非表示','Cursor','エディタ、入力中の集中','入力中はカーソルがフェードアウトするようにして','cursor-hide-type','cursor'],
+  ['Cursor Crosshair','カーソルクロスヘア','Cursor','画像編集、精密操作','カーソルを十字線に切り替えて','cursor-crosshair','cursor'],
+  ['Cursor Zoom Lens','カーソルズームレンズ','Cursor','商品画像、地図の拡大','カーソル位置がレンズのように拡大されるようにして','cursor-zoom-lens','spotlight'],
+  ['Lightbox Zoom Open','ライトボックスズーム','Media','画像ギャラリー、商品詳細','サムネイルからライトボックスへズームして開くようにして','lightbox-zoom','photo'],
+  ['Video Play Bounce','動画再生バウンス','Media','動画サムネイル、プレイヤー','再生ボタンが押されるとバウンスするようにして','video-play-bounce','photo'],
+  ['Picture In Picture Dock','ピクチャーインピクチャー','Media','動画通話、動画再生','動画が縮小して隅にドッキングするようにして','pip-dock','photo'],
+  ['Gallery Swipe Peek','ギャラリースワイプピーク','Media','画像ギャラリー、商品写真','次の画像が少し見えるスワイプにして','gallery-swipe-peek','gallery'],
+  ['Audio Waveform Pulse','音声波形パルス','Media','ボイスメッセージ、通話中','音声波形が音量に合わせて脈打つようにして','audio-waveform-pulse','wave'],
+  ['Video Buffer Spin','動画バッファリング','Media','動画読み込み中','バッファリング中のスピナーを見せて','video-buffer-spin','photo'],
+  ['Thumbnail Hover Zoom','サムネイルホバーズーム','Media','商品一覧、ギャラリー','ホバーでサムネイルが拡大するようにして','thumbnail-hover-zoom','photo'],
+  ['Fullscreen Expand','フルスクリーン展開','Media','動画、画像ビューア','フルスクリーンへ滑らかに拡大するようにして','fullscreen-expand','photo'],
+  ['Scroll Snap Section','スクロールスナップ','Scroll','フルページ、ストーリー型LP','セクションごとにスナップするスクロールにして','scroll-snap-section','panel'],
+  ['Scroll Velocity Blur','スクロール速度ブラー','Scroll','高速スクロール演出','速くスクロールすると少しブラーがかかるようにして','scroll-velocity-blur','block'],
+  ['Scroll Horizontal Track','横スクロールトラック','Scroll','ギャラリー、タイムライン','縦スクロールに連動して横に動くセクションにして','scroll-horizontal-track','panel'],
+  ['Scroll Pin Card','スクロールピン留め','Scroll','比較セクション、手順','カードが固定されたまま次に切り替わるようにして','scroll-pin-card','panel'],
+  ['Scroll Counter Increment','スクロール連動カウント','Scroll','実績数値、統計','スクロールで数字がカウントアップするようにして','scroll-counter','number'],
+  ['Scroll Nav Highlight','スクロールナビハイライト','Scroll','目次、アンカーナビ','現在地に応じてナビがハイライトされるようにして','scroll-nav-highlight','link'],
+  ['Scroll Progress Ring','スクロール進捗リング','Scroll','記事、長いページ','円形の読了率インジケーターにして','scroll-progress-ring','ring'],
+  ['Scroll Rotate In','スクロール回転イン','Scroll','画像、アイコン、装飾','スクロールに応じて回転しながら現れるようにして','scroll-rotate-in','block'],
+  ['Dropdown Cascade','ドロップダウンカスケード','Menu','設定メニュー、選択肢一覧','メニュー項目が順番にカスケード表示されるようにして','dropdown-cascade','menu'],
+  ['Mega Menu Column Reveal','メガメニュー列リビール','Menu','ECサイト、カテゴリナビ','メガメニューの列が順にリビールされるようにして','mega-menu-column','menu'],
+  ['Breadcrumb Overflow Collapse','パンくず折りたたみ','Menu','深い階層のナビゲーション','長いパンくずが折りたたまれて…になるようにして','breadcrumb-collapse','breadcrumb'],
+  ['Nested Submenu Slide','ネストサブメニュー','Menu','多階層メニュー、設定','サブメニューが横にスライドして開くようにして','nested-submenu-slide','menu'],
+  ['Context Menu Item Stagger','コンテキストメニュー展開','Menu','右クリックメニュー','メニュー項目が順番にスタッガー表示されるようにして','context-menu-stagger','menu'],
+  ['Menu Icon Morph','メニューアイコン変形','Menu','ハンバーガーメニュー','ハンバーガーアイコンがXに変形するようにして','menu-icon-morph','menu'],
+  ['Menu Active Indicator Glide','メニューインジケーター移動','Menu','サイドメニュー、タブ','選択中インジケーターが滑らかに移動するようにして','menu-indicator-glide','tabs'],
+  ['Masonry Reflow','メーソンリー再配置','Layout','画像ギャラリー、Pinterest風一覧','フィルター時にメーソンリーが再配置されるようにして','masonry-reflow','grid'],
+  ['Bento Grid Resize','ベントグリッドリサイズ','Layout','ダッシュボード、特集ページ','ベントグリッドのタイルが拡大縮小するようにして','bento-grid-resize','grid'],
+  ['Split View Drag','分割ビュードラッグ','Layout','エディタ、比較画面','境界線をドラッグして分割比率が変わるようにして','split-view-drag','panel'],
+  ['Grid To List Toggle','グリッドリスト切替','Layout','商品一覧、ファイル一覧','グリッド表示とリスト表示が切り替わるようにして','grid-list-toggle','grid'],
+  ['Kanban Column Collapse','カンバン列折りたたみ','Layout','タスク管理、プロジェクト管理','カンバンの列が折りたためるようにして','kanban-column-collapse','card'],
+  ['Responsive Stack Collapse','レスポンシブ縦積み','Layout','モバイル表示、レスポンシブ','横並びが縦積みに変わる遷移を見せて','responsive-stack-collapse','grid'],
+  ['Card Grid Reflow','カードグリッド再配置','Layout','検索結果、フィルター一覧','削除・追加時にカードグリッドが再配置されるようにして','card-grid-reflow','grid'],
+  ['Bottom Nav Highlight','ボトムナビハイライト','Navigation','モバイルアプリの下部ナビ','選択中のタブアイコンがハイライトされるようにして','bottom-nav-highlight','tabs'],
+  ['Stepper Wizard Progress','ステッパーウィザード','Navigation','複数ステップの登録フロー','ウィザードのステッパーが順に進むようにして','stepper-wizard','breadcrumb'],
+  ['Nav Rail Expand','ナビレール展開','Navigation','デスクトップアプリ、管理画面','折りたたみナビレールがラベル付きに展開するようにして','nav-rail-expand','drawer'],
+  ['Tab Overflow Scroll','タブオーバーフロースクロール','Navigation','多数のタブ、ブラウザ風UI','収まらないタブが横スクロールできるようにして','tab-overflow-scroll','tabs'],
+  ['Route Transition Fade Through','ルート遷移フェードスルー','Navigation','SPAのページ遷移','一度暗くなってから次のページに変わる遷移にして','route-fade-through','page'],
+  ['Back Gesture Preview','戻るジェスチャープレビュー','Navigation','iOSスタイルの戻る操作','戻るときに前の画面が少し覗くようにして','back-gesture-preview','page'],
+  ['Marquee Text Loop','マーキーテキストループ','Text','ニュース速報、ロゴ列','テキストが横に流れ続けるマーキーにして','marquee-text-loop','marquee'],
+  ['Kinetic Typography Bounce','キネティックタイポ','Text','動画字幕、広告コピー','単語ごとに弾みながら現れるタイポグラフィにして','kinetic-typo-bounce','words'],
+  ['Highlight Underline Draw','ハイライト下線描画','Text','強調テキスト、引用','テキストの下にマーカーの線が引かれるようにして','highlight-underline-draw','text'],
+  ['Text Split Reveal','テキスト分割リビール','Text','見出し、キャッチコピー','文字が上下に分割されて現れるようにして','text-split-reveal','text'],
+  ['Gradient Text Loop','グラデーションテキストループ','Text','ブランド見出し、AI系UI','文字のグラデーションが流れ続けるようにして','gradient-text-loop','text'],
+  ['Text Counter Roll','テキストカウンターロール','Text','統計、達成数値','数字が回転しながらカウントするようにして','text-counter-roll','ticker'],
+  ['Ambient Gradient Drift','アンビエントグラデーション','Visual','背景演出、待機画面','背景のグラデーションがゆっくり漂うようにして','ambient-gradient-drift','panel'],
+  ['Film Grain Toggle','フィルムグレイン切替','Visual','レトロ演出、フィルター','フィルムグレインのノイズが明滅するようにして','film-grain-toggle','panel'],
+  ['Chromatic Aberration','色収差エフェクト','Visual','グリッチ演出、エラー表現','色収差がずれてから戻るようにして','chromatic-aberration','text'],
+  ['Vignette Pulse','ビネットパルス','Visual','ダークUI、注目演出','周辺減光が脈打つようにして','vignette-pulse','panel'],
+  ['Duotone Toggle','デュオトーン切替','Visual','写真フィルター、アート表現','デュオトーンのカラーが切り替わるようにして','duotone-toggle','panel'],
+  ['Color Shift Loop','カラーシフトループ','Visual','背景、装飾要素','背景色が緩やかに変化し続けるようにして','color-shift-loop','panel'],
+  ['Kanban Card Drag','カンバンカードドラッグ','List','タスク管理、進捗ボード','カードを別列にドラッグする動きを見せて','kanban-card-drag','card'],
+  ['Virtualized List Scroll','仮想リストスクロール','List','大量データの一覧','スクロールに応じて行が入れ替わるようにして','virtualized-list-scroll','list'],
+  ['List Group Collapse','リストグループ折りたたみ','List','カテゴリ別一覧、設定','グループ見出しで一覧が折りたためるようにして','list-group-collapse','list'],
+  ['List Item Expand Inline','リスト項目インライン展開','List','FAQ、詳細付き一覧','行をタップするとその場で詳細が展開するようにして','list-item-expand-inline','list'],
+  ['List Multi Select Check','リスト複数選択','List','メール一覧、ファイル管理','チェックボックスで複数選択できる見た目にして','list-multi-select','list'],
+  ['List Pin To Top','リスト先頭固定','List','ピン留め、重要な項目','ピン留めした項目が先頭に移動するようにして','list-pin-top','list'],
+  ['Funnel Chart Narrow','ファネルチャート','Data','コンバージョン分析、営業パイプライン','ファネルが段階的に狭まって描かれるようにして','funnel-chart','chart-bars'],
+  ['Sankey Flow','サンキーダイアグラム','Data','資金フロー、ユーザー導線分析','サンキー図の帯が流れるように描かれるようにして','sankey-flow','chart-line'],
+  ['Comparison Bars Race','比較バーレース','Data','ランキング、競合比較','バーが競い合うように伸びるレースチャートにして','comparison-bars-race','chart-bars'],
+  ['Radar Chart Draw','レーダーチャート描画','Data','スキル評価、多角比較','レーダーチャートの多角形が描かれるようにして','radar-chart-draw','pie'],
+  ['Scatter Plot Populate','散布図生成','Data','相関分析、統計','散布図の点が順に打たれるようにして','scatter-plot-populate','chart-line'],
+  ['Waterfall Bars','ウォーターフォールチャート','Data','収支分析、増減の内訳','ウォーターフォール式に積み上がるバーにして','waterfall-bars','chart-bars'],
+  ['Range Slider Fill Track','レンジスライダー塗り','Input','価格範囲、数量調整','スライダーのトラックが値に合わせて塗られるようにして','range-slider-fill','slider'],
+  ['Multi Select Tag Add','複数選択タグ追加','Input','フィルター、宛先選択','選択のたびにタグが追加されていくようにして','multi-select-tag-add','autocomplete'],
+  ['File Drop Zone Highlight','ファイルドロップゾーン','Input','ファイルアップロード','ファイルをドラッグすると枠がハイライトされるようにして','file-drop-highlight','input'],
+  ['Color Picker Swatch Pop','カラーピッカースウォッチ','Input','テーマ設定、デザインツール','選択した色見本がポップするようにして','color-picker-pop','radio'],
+  ['Date Picker Cell Select','日付ピッカー選択','Input','予約、カレンダー入力','カレンダーの日付セルが選択されるようにして','date-picker-select','grid'],
+  ['Toggle Group Slide','トグルグループスライド','Input','フィルター切替、表示モード','選択中のトグルへ背景が滑るようにして','toggle-group-slide','switch'],
+  ['Toast Stack Collapse','トーストスタック収納','Feedback','複数通知、まとめ表示','複数のトーストが1つに収納されるようにして','toast-stack-collapse','list'],
+  ['Inline Field Validation','インライン検証','Feedback','フォーム入力中の確認','入力しながらリアルタイムに検証結果が出るようにして','inline-field-validation','input-error'],
+  ['Progress Toast Update','進捗トースト更新','Feedback','アップロード、ダウンロード通知','トースト内の進捗が更新され続けるようにして','progress-toast-update','progress'],
+  ['Retry Shake Button','リトライシェイクボタン','Feedback','通信エラー、失敗操作','失敗時にボタンが軽くシェイクして再試行を促すようにして','retry-shake-button','button'],
+  ['Spotlight Pulse Ring','スポットライトパルスリング','Emphasis','オンボーディング、注目誘導','対象の周りにパルスするリングを出して','spotlight-pulse-ring','ring'],
+  ['Badge Glow Loop','バッジグローループ','Emphasis','新着バッジ、プレミアム表示','バッジが継続的にグローするようにして','badge-glow-loop','dot'],
+  ['New Item Sparkle','新着スパークル','Emphasis','新機能、新着アイテム','新着マークがキラッと光るようにして','new-item-sparkle','dot'],
+  ['Attention Border Loop','注目ボーダーループ','Emphasis','フォーム未入力、必須項目','枠線が繰り返し注目を引くようにして','attention-border-loop','panel'],
+  ['Button Morph To Loader','ボタンローダー変形','Button','送信、保存、非同期処理','ボタンが送信中にローダー形状へ変形するようにして','button-morph-loader','button-loader'],
+  ['Button Icon Rotate Swap','ボタンアイコン回転入替','Button','更新、リフレッシュ操作','クリック後にアイコンが回転しながら入れ替わるようにして','button-icon-rotate-swap','button-icon'],
 ].map(([name, jpName, category, useFor, request, className, preview, html]) =>
   ({ name, jpName, category, useFor, request, className, preview, html })
 )
@@ -554,6 +656,179 @@ HOVER_NAMES.forEach(n => motions.push(hoverEntry(n)))
 SPINKIT.forEach(row => motions.push(spinkitEntry(row)))
 CSSHAKE.forEach(row => motions.push(csshakeEntry(row)))
 
+/* ════════════════════════════════════════════════════════════
+   Three.js / WebGL motions. The metadata lives here so search,
+   filters, URL state, and copy actions share the 2D catalog UI.
+   Rendering is handled by /three-catalog.js with one WebGL
+   renderer shared across every visible preview.
+════════════════════════════════════════════════════════════ */
+const THREE_CATEGORIES = [
+  'Transform', 'Camera', 'Lighting', 'Material',
+  'Particles', 'Geometry', 'Spatial UI', 'Physics',
+]
+
+const threeTargets = [
+  { id: 'object', label: 'オブジェクト', short: 'Object' },
+  { id: 'camera', label: 'カメラ', short: 'Camera' },
+  { id: 'light', label: 'ライト', short: 'Light' },
+  { id: 'material', label: 'マテリアル', short: 'Material' },
+  { id: 'particles', label: 'パーティクル', short: 'Particles' },
+  { id: 'geometry', label: 'ジオメトリ', short: 'Geometry' },
+  { id: 'spatial-ui', label: '空間UI', short: 'Spatial UI' },
+  { id: 'physics', label: '物理表現', short: 'Physics' },
+]
+
+const THREE_MOTION_ROWS = [
+  ['Continuous Y Rotation','Y軸連続回転','Transform','商品ビュー、ロゴ、3Dアイコン','オブジェクトをY軸で一定速度に回転させて','rotate-y','object','4s · linear · ∞',
+    'object.rotation.y = t * 1.5'],
+  ['Multi Axis Spin','多軸スピン','Transform','ローダー、抽象オブジェクト、トランジション','X/Y/Zの異なる速度で多軸回転させて','multi-axis-spin','object','5s · linear · ∞',
+    'object.rotation.set(t * 0.7, t * 1.1, t * 0.35)'],
+  ['Object Orbit','オブジェクト周回','Transform','衛星、関係図、プロダクト構成','中心オブジェクトの周りを小さな要素が周回するようにして','object-orbit','object','6s · sine · ∞',
+    'object.position.set(Math.cos(t) * 1.5, 0, Math.sin(t) * 1.5)'],
+  ['Spring Scale','スプリングスケール','Transform','3Dボタン、選択、配置完了','3Dオブジェクトが柔らかく拡大して定位置に収まるようにして','spring-scale','object','2.4s · damped · ∞',
+    'object.scale.setScalar(1 + Math.sin(t * 3) * Math.exp(-(t % 2.4)) * 0.35)'],
+  ['Squash & Stretch','スクワッシュ＆ストレッチ','Transform','キャラクター、ボール、遊びのある反応','上下運動に合わせて潰れと伸びを付けて','squash-stretch','object','2s · sine · ∞',
+    'object.scale.set(1 + Math.sin(t * 3) * 0.18, 1 - Math.sin(t * 3) * 0.24, 1 + Math.sin(t * 3) * 0.18)'],
+  ['Float Bob','フロートボブ','Transform','空中カード、3Dアイコン、待機状態','ゆっくり浮遊しながら少し傾く待機モーションにして','float-bob','object','4s · sine · ∞',
+    'object.position.y = Math.sin(t * 1.5) * 0.35; object.rotation.z = Math.sin(t) * 0.12'],
+  ['Helix Rise','らせん上昇','Transform','生成、アップロード、レベルアップ','らせん軌道を描きながら上昇する動きにして','helix-rise','object','5s · linear · ∞',
+    'object.position.set(Math.cos(t * 2), (t % 2.5) - 1.25, Math.sin(t * 2))'],
+  ['Pendulum Swing','振り子スイング','Transform','メニュー、吊り下げ表示、物理的な待機','支点から振り子のように往復するようにして','pendulum-swing','object','3s · sine · ∞',
+    'object.rotation.z = Math.sin(t * 2) * 0.65'],
+  ['Card Flip','3Dカードフリップ','Transform','カード詳細、before/after、状態切替','カードをY軸で裏返して反対面を見せて','card-flip','object','3s · in-out · ∞',
+    'object.rotation.y = (1 - Math.cos(t * 2)) * Math.PI * 0.5'],
+  ['Explode & Assemble','分解と再構成','Transform','プロダクト分解図、ロゴ、ロード完了','パーツが外側へ分解してから元に組み上がるようにして','explode-assemble','object','4s · in-out · ∞',
+    'object.children.forEach((part, i) => part.position.x = Math.sin(t * 1.5) * (i - 2) * 0.55)'],
+
+  ['Camera Orbit','カメラオービット','Camera','製品紹介、建築、3Dギャラリー','カメラが被写体の周囲を一定半径で回り込むようにして','camera-orbit','camera','7s · linear · ∞',
+    'camera.position.set(Math.cos(t * 0.7) * 5, 2, Math.sin(t * 0.7) * 5); camera.lookAt(0, 0, 0)'],
+  ['Dolly In','ドリーイン','Camera','シーン導入、注目、詳細表示','カメラを被写体へ滑らかに近づけて','dolly-in','camera','3s · in-out · ∞',
+    'camera.position.z = 5 - (Math.sin(t) * 0.5 + 0.5) * 2'],
+  ['Truck Pan','トラックパン','Camera','横長シーン、ギャラリー、比較','カメラを向きを保ったまま左右へ平行移動して','truck-pan','camera','4s · sine · ∞',
+    'camera.position.x = Math.sin(t) * 2; camera.lookAt(camera.position.x, 0, 0)'],
+  ['Crane Rise','クレーンライズ','Camera','俯瞰への切替、建築、シーン全体表示','カメラを上昇させながら俯瞰へ切り替えて','crane-rise','camera','4s · in-out · ∞',
+    'camera.position.y = 1.5 + (Math.sin(t) * 0.5 + 0.5) * 3; camera.lookAt(0, 0, 0)'],
+  ['Handheld Shake','ハンドヘルドシェイク','Camera','衝撃、ゲーム演出、警告','短く減衰するハンドヘルド風のカメラシェイクを入れて','camera-shake','camera','1.2s · damped · ∞',
+    'camera.position.x = Math.sin(t * 35) * 0.04; camera.position.y = Math.cos(t * 29) * 0.035'],
+  ['Layer Parallax','レイヤーパララックス','Camera','奥行きのあるUI、ヒーロー、空間ナビ','カメラ移動に合わせて奥行き別に視差を付けて','layer-parallax','camera','5s · sine · ∞',
+    'camera.position.x = Math.sin(t * 0.8) * 1.2; camera.lookAt(0, 0, 0)'],
+
+  ['Light Sweep','ライトスイープ','Lighting','プロダクトリビール、ロゴ、質感紹介','細いライトが表面を横切って形状を見せるようにして','light-sweep','light','4s · in-out · ∞',
+    'light.position.x = Math.sin(t) * 4'],
+  ['Rim Light Pulse','リムライトパルス','Lighting','選択状態、エネルギー、注目オブジェクト','輪郭のリムライトがゆっくり脈打つようにして','rim-light-pulse','light','3s · sine · ∞',
+    'material.emissiveIntensity = 0.25 + (Math.sin(t * 2) * 0.5 + 0.5) * 1.2'],
+  ['Orbiting Point Light','周回ポイントライト','Lighting','立体感の提示、検査、シーン待機','ポイントライトを被写体の周りに周回させて','point-light-orbit','light','6s · linear · ∞',
+    'light.position.set(Math.cos(t) * 3, 1.5, Math.sin(t) * 3)'],
+  ['Shadow Dance','シャドウダンス','Lighting','時刻変化、建築、印象的な背景','ライト移動に合わせて影が回り込むようにして','shadow-dance','light','5s · sine · ∞',
+    'light.position.set(Math.sin(t) * 3, 4, Math.cos(t) * 3)'],
+  ['Color Temperature Shift','色温度シフト','Lighting','時間帯、ムード切替、環境変化','照明を暖色から寒色へゆっくり切り替えて','temperature-shift','light','5s · sine · ∞',
+    'light.color.setHSL(0.08 + (Math.sin(t) * 0.5 + 0.5) * 0.52, 0.75, 0.62)'],
+
+  ['Emissive Pulse','エミッシブパルス','Material','通知、エネルギー、ホログラム','マテリアルの発光強度を滑らかに脈動させて','emissive-pulse','material','2.5s · sine · ∞',
+    'material.emissiveIntensity = 0.2 + (Math.sin(t * 2.5) * 0.5 + 0.5) * 1.6'],
+  ['Wireframe Reveal','ワイヤーフレームリビール','Material','モデル読込、設計ビュー、技術表現','ワイヤーフレームからソリッドへ切り替わるようにして','wireframe-reveal','material','4s · in-out · ∞',
+    'material.opacity = 0.35 + (Math.sin(t) * 0.5 + 0.5) * 0.65'],
+  ['Point Dissolve','ポイントディゾルブ','Material','出現、消失、テレポート','表面がポイントにほどけて消えるようにして','point-dissolve','material','4s · in-out · ∞',
+    'object.scale.setScalar(0.7 + (Math.sin(t) * 0.5 + 0.5) * 0.45)'],
+  ['Hologram Scan','ホログラムスキャン','Material','AR表示、解析、未来的なプレビュー','水平スキャンラインがモデルを通過するホログラム表現にして','hologram-scan','material','3s · linear · ∞',
+    'material.opacity = 0.55 + Math.sin(t * 8) * 0.2'],
+  ['Fresnel Shift','フレネルシフト','Material','透明体、エネルギー、輪郭強調','視線角度に応じて輪郭色が変わるフレネル表現にして','fresnel-shift','material','5s · sine · ∞',
+    'object.rotation.y = t * 0.7; material.opacity = 0.65 + Math.sin(t * 2) * 0.2'],
+  ['Glass Refraction','ガラス屈折','Material','ガラスUI、製品、透明カード','透明なガラス材質が背景を屈折して見せるようにして','glass-refraction','material','5s · sine · ∞',
+    'object.rotation.set(Math.sin(t) * 0.2, t * 0.45, 0)'],
+
+  ['Particle Orbit','パーティクル周回','Particles','エネルギー、データ、待機状態','多数の粒子が中心核の周囲を軌道運動するようにして','particle-orbit','particles','6s · linear · ∞',
+    'object.rotation.y = t * 0.8'],
+  ['Sine Wave Field','サイン波フィールド','Particles','音声、信号、データ可視化','粒子の面をサイン波が伝わるようにして','particle-wave','particles','4s · sine · ∞',
+    'object.rotation.y = Math.sin(t * 0.4) * 0.25'],
+  ['Vortex Funnel','ボルテックスファネル','Particles','吸い込み、ポータル、生成','粒子を渦巻きながら中心へ吸い込ませて','particle-vortex','particles','5s · in-out · ∞',
+    'object.rotation.y = t * 1.6; object.scale.setScalar(0.9 + Math.sin(t) * 0.08)'],
+  ['Particle Fountain','パーティクル噴水','Particles','達成、発生、噴射','粒子が中心から噴き上がって落下するようにして','particle-fountain','particles','3s · gravity · ∞',
+    'object.rotation.y = t * 0.25'],
+  ['Starfield Warp','スターフィールドワープ','Particles','高速移動、ページ遷移、没入導入','星が手前へ伸びるワープ速度表現にして','starfield-warp','particles','3s · accelerate · ∞',
+    'object.position.z = (t * 2) % 4'],
+  ['Confetti Burst','3Dコンフェッティ','Particles','大きな達成、公開、完了','紙片が3D空間へ一度広がって落ちるようにして','confetti-burst','particles','4s · gravity · ∞',
+    'object.rotation.y = t * 0.3'],
+
+  ['Cube to Sphere Morph','キューブ→球モーフ','Geometry','形状変化、モード切替、生成','キューブの頂点を球面へ補間してモーフさせて','cube-sphere-morph','geometry','4s · in-out · ∞',
+    'object.scale.setScalar(0.9 + (Math.sin(t) * 0.5 + 0.5) * 0.15)'],
+  ['Torus Twist','トーラスツイスト','Geometry','抽象ロゴ、ローダー、音楽ビジュアル','トーラスがねじれながら回転するようにして','torus-twist','geometry','5s · sine · ∞',
+    'object.rotation.set(t * 0.45, t * 0.8, Math.sin(t) * 0.3)'],
+  ['Wave Grid','ウェーブグリッド','Geometry','地形、データ面、背景','グリッド面を波が横切るように変形して','wave-grid','geometry','4s · sine · ∞',
+    'object.rotation.z = Math.sin(t * 0.5) * 0.05'],
+  ['Domino Chain','ドミノチェーン','Geometry','連鎖、手順、依存関係','ドミノが順番に倒れて連鎖するようにして','domino-chain','geometry','5s · stagger · ∞',
+    'object.children.forEach((part, i) => part.rotation.z = Math.max(0, Math.sin(t * 1.4 - i * 0.25)) * 1.2)'],
+  ['Stack Build','スタックビルド','Geometry','データ積上げ、ロード、構築','ブロックが下から順に積み上がるようにして','stack-build','geometry','4s · stagger · ∞',
+    'object.children.forEach((part, i) => part.position.y = i * 0.45 - 1 + Math.sin(t * 2 - i * 0.3) * 0.08)'],
+  ['Ribbon Flow','リボンフロー','Geometry','データフロー、ブランドライン、経路','細いリボン形状が空間を流れるように変形して','ribbon-flow','geometry','5s · sine · ∞',
+    'object.rotation.y = Math.sin(t * 0.6) * 0.4'],
+
+  ['3D Card Tilt','3Dカードチルト','Spatial UI','カード、商品、ダッシュボード','ポインター操作でカードが奥行きを保って傾くようにして','card-tilt-3d','spatial-ui','pointer · spring',
+    'object.rotation.set(pointer.y * 0.25, pointer.x * 0.35, 0)'],
+  ['Spatial Carousel','空間カルーセル','Spatial UI','作品一覧、商品、メディア','カードを円周上に並べて空間カルーセルとして回して','spatial-carousel','spatial-ui','6s · linear · ∞',
+    'object.rotation.y = t * 0.55'],
+  ['Radial Menu Depth','奥行きラジアルメニュー','Spatial UI','ツール選択、クリエイティブUI','メニュー項目を奥行き付きの円形に展開して','radial-menu-depth','spatial-ui','4s · in-out · ∞',
+    'object.rotation.z = Math.sin(t * 0.7) * 0.18'],
+  ['Modal Depth Push','モーダル奥行きプッシュ','Spatial UI','3Dアプリのモーダル、詳細表示','背景を奥へ押し込みながらモーダル面を手前に出して','modal-depth-push','spatial-ui','3s · in-out · ∞',
+    'object.children[0].position.z = Math.sin(t) * 0.6; object.children[1].position.z = 0.8 - Math.sin(t) * 0.25'],
+  ['3D Data Bars','3Dデータバー','Spatial UI','分析、ランキング、指標','3Dの棒グラフが順番に下から伸びるようにして','data-bars-3d','spatial-ui','4s · stagger · ∞',
+    'object.children.forEach((bar, i) => bar.scale.y = 0.25 + (Math.sin(t * 1.6 - i * 0.25) * 0.5 + 0.5) * 0.75)'],
+  ['Spatial Tooltip','空間ツールチップ','Spatial UI','3Dモデル注釈、製品説明、AR UI','3D位置に追従するツールチップ面を浮かせて','spatial-tooltip','spatial-ui','3s · sine · ∞',
+    'object.children[1].position.y = 1.2 + Math.sin(t * 2) * 0.12'],
+
+  ['Gravity Drop','重力ドロップ','Physics','配置、追加、落下演出','オブジェクトが重力で落下して床で小さく跳ねるようにして','gravity-drop','physics','2.8s · gravity · ∞',
+    'object.position.y = Math.abs(Math.sin(t * 1.8)) * 2'],
+  ['Collision Bounce','衝突バウンス','Physics','通知、ゲーム、物体接触','2つのオブジェクトが衝突して反対方向へ跳ね返るようにして','collision-bounce','physics','3s · collision · ∞',
+    'object.children[0].position.x = Math.sin(t * 2) * 1.2; object.children[1].position.x = -Math.sin(t * 2) * 1.2'],
+  ['Magnetic Attraction','磁力アトラクション','Physics','関連付け、スナップ、グルーピング','複数の要素が磁力で中心へ引き寄せられるようにして','magnetic-attraction','physics','4s · spring · ∞',
+    'object.children.forEach((part, i) => part.position.multiplyScalar(0.98 + Math.sin(t + i) * 0.002))'],
+  ['Cloth Wave','クロスウェーブ','Physics','布、旗、柔らかいサーフェス','布の頂点へ風が伝わる波を与えて','cloth-wave','physics','4s · sine · ∞',
+    'object.rotation.y = Math.sin(t * 0.5) * 0.18'],
+  ['Spring Chain','スプリングチェーン','Physics','接続ノード、ケーブル、追従UI','連結したノードが遅れて追従するスプリングチェーンにして','spring-chain','physics','4s · damped · ∞',
+    'object.children.forEach((part, i) => part.position.y = Math.sin(t * 2 - i * 0.35) * 0.35)'],
+]
+
+function createThreeSnippet(motion) {
+  return `import * as THREE from 'three'
+
+const scene = new THREE.Scene()
+const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100)
+camera.position.set(0, 1.2, 5)
+
+const material = new THREE.MeshStandardMaterial({
+  color: 0x5271ff,
+  roughness: 0.35,
+  metalness: 0.15,
+})
+const object = new THREE.Mesh(new THREE.BoxGeometry(1.5, 1.5, 1.5), material)
+const light = new THREE.PointLight(0xffffff, 4)
+light.position.set(3, 4, 4)
+scene.add(object, light, new THREE.AmbientLight(0xffffff, 1.2))
+
+// ${motion.name}
+function animate(time) {
+  const t = time / 1000
+  ${motion.updateCode}
+  renderer.render(scene, camera)
+}
+renderer.setAnimationLoop(animate)`
+}
+
+const threeMotions = THREE_MOTION_ROWS.map(
+  ([name, jpName, category, useFor, request, key, target, spec, updateCode]) => {
+    const motion = {
+      name, jpName, category, useFor, request, key, spec, updateCode,
+      className: key,
+      preview: 'three',
+      source: 'Three.js r184',
+      targets: [target],
+      dimension: '3d',
+    }
+    motion.code = createThreeSnippet(motion)
+    return motion
+  }
+)
+
 function motionText(motion) {
   return `${motion.name} ${motion.jpName} ${motion.category} ${motion.useFor} ${motion.request} ${motion.className} ${motion.source || ''}`.toLowerCase()
 }
@@ -636,7 +911,18 @@ motions.forEach((motion, index) => {
     .join(' ')}`.toLowerCase()
 })
 
+threeMotions.forEach((motion, index) => {
+  motion.id = index + 1
+  motion.haystack = `${motionText(motion)} ${motion.targets
+    .map(id => {
+      const hit = threeTargets.find(item => item.id === id)
+      return hit ? `${hit.label} ${hit.short}` : ''
+    })
+    .join(' ')}`.toLowerCase()
+})
+
 /* ── State ──────────────────────────────────────────────────── */
+let activeDimension = '2d'
 let activeTarget = 'All'
 let activeCategory = 'All'
 let speedRate = 1
@@ -657,6 +943,66 @@ const enableBtn     = document.getElementById('enableMotion')
 const emptyState    = document.getElementById('emptyState')
 const resetBtn      = document.getElementById('resetFilters')
 const resultCount   = document.getElementById('resultCount')
+const dimensionTabs = document.querySelector('.dimension-tabs')
+const dimensionIndex = document.getElementById('dimensionIndex')
+const dimensionTitle = document.getElementById('dimensionTitle')
+const dimensionDescription = document.getElementById('dimensionDescription')
+
+function activeMotions() {
+  return activeDimension === '3d' ? threeMotions : motions
+}
+
+function activeTargets() {
+  return activeDimension === '3d' ? threeTargets : targets
+}
+
+function activeCategories() {
+  return activeDimension === '3d' ? THREE_CATEGORIES : categories
+}
+
+function syncDimensionUI() {
+  document.body.dataset.catalogDimension = activeDimension
+  document.querySelectorAll('[data-dimension]').forEach(tab => {
+    const selected = tab.dataset.dimension === activeDimension
+    tab.setAttribute('aria-selected', String(selected))
+    tab.tabIndex = selected ? 0 : -1
+  })
+
+  const isThree = activeDimension === '3d'
+  dimensionIndex.textContent = isThree ? 'CATALOG / 3D' : 'CATALOG / 2D'
+  dimensionTitle.textContent = isThree ? '3D Motion Lab' : '2D UI Motion'
+  dimensionDescription.textContent = isThree
+    ? 'WebGLの50シーンをその場で再生。プレビューをドラッグ、または矢印キーで視点を動かせます。'
+    : 'CSSで扱えるUIモーションを、用途と実装コードから探せます。'
+  searchInput.placeholder = isThree
+    ? 'camera, particle, material, 物理, カード…'
+    : 'ボタン, トースト, fade, 削除, 生成中…'
+}
+
+function setDimension(next) {
+  if (!['2d', '3d'].includes(next) || next === activeDimension) return
+  activeDimension = next
+  activeTarget = 'All'
+  activeCategory = 'All'
+  searchInput.value = ''
+  searchClear.hidden = true
+  syncDimensionUI()
+  refresh()
+}
+
+dimensionTabs.addEventListener('click', event => {
+  const tab = event.target.closest('[data-dimension]')
+  if (!tab) return
+  setDimension(tab.dataset.dimension)
+})
+
+dimensionTabs.addEventListener('keydown', event => {
+  if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return
+  event.preventDefault()
+  const next = activeDimension === '2d' ? '3d' : '2d'
+  setDimension(next)
+  dimensionTabs.querySelector(`[data-dimension="${next}"]`)?.focus()
+})
 
 /* ── Theme ──────────────────────────────────────────────────── */
 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)')
@@ -828,7 +1174,21 @@ function resolvePreviewType(motion) {
   return contextual[activeTarget] || motion.preview
 }
 
+function renderThreePreview(motion) {
+  return `<div
+    class="preview-stage three-stage"
+    data-three-key="${motion.key}"
+    tabindex="0"
+    role="img"
+    aria-label="${motion.jpName}のWebGLプレビュー。ドラッグまたは矢印キーで視点を動かせます。"
+  >
+    <span class="three-stage__loading" aria-hidden="true">WEBGL</span>
+    <span class="three-stage__hint" aria-hidden="true">DRAG / ARROW KEYS</span>
+  </div>`
+}
+
 function renderPreview(motion) {
+  if (motion.dimension === '3d') return renderThreePreview(motion)
   if (motion.html) return `<div class="preview-stage">${motion.html}</div>`
   const cls = `preview-motion ${motion.className}`
   switch (resolvePreviewType(motion)) {
@@ -1069,15 +1429,16 @@ function currentQuery() {
 }
 
 function targetLabel(id) {
-  const hit = targets.find(item => item.id === id)
+  const hit = activeTargets().find(item => item.id === id)
   return hit ? hit.short : id
 }
 
 function createTargetFilters() {
   const query = currentQuery()
-  const allTargets = [{ id: 'All', label: 'すべて', short: 'All' }, ...targets]
+  const catalog = activeMotions()
+  const allTargets = [{ id: 'All', label: 'すべて', short: 'All' }, ...activeTargets()]
   targetEl.innerHTML = allTargets.map(item => {
-    const count = motions.filter(m =>
+    const count = catalog.filter(m =>
       matchesTarget(m, item.id) && matchesCategory(m) && matchesSearch(m, query)
     ).length
     const isActive = item.id === activeTarget
@@ -1093,9 +1454,10 @@ function createTargetFilters() {
 
 function createCategoryFilters() {
   const query = currentQuery()
-  const allCategories = ['All', ...categories]
+  const catalog = activeMotions()
+  const allCategories = ['All', ...activeCategories()]
   filtersEl.innerHTML = allCategories.map(cat => {
-    const count = motions.filter(m =>
+    const count = catalog.filter(m =>
       matchesCategory(m, cat) && matchesTarget(m) && matchesSearch(m, query)
     ).length
     if (cat !== 'All' && count === 0) return ''
@@ -1112,16 +1474,19 @@ function createCategoryFilters() {
 /* ── URL state ──────────────────────────────────────────────── */
 function readStateFromURL() {
   const params = new URLSearchParams(location.search)
+  const dimension = params.get('dimension')
   const q = params.get('q')
   const target = params.get('target')
   const cat = params.get('cat')
+  if (dimension === '3d') activeDimension = '3d'
   if (q) searchInput.value = q
-  if (target && targets.some(t => t.id === target)) activeTarget = target
-  if (cat && categories.includes(cat)) activeCategory = cat
+  if (target && activeTargets().some(t => t.id === target)) activeTarget = target
+  if (cat && activeCategories().includes(cat)) activeCategory = cat
 }
 
 function writeStateToURL() {
   const params = new URLSearchParams()
+  if (activeDimension === '3d') params.set('dimension', '3d')
   const q = searchInput.value.trim()
   if (q) params.set('q', q)
   if (activeTarget !== 'All') params.set('target', activeTarget)
@@ -1135,6 +1500,7 @@ const SPEED_STEPS = [1, 0.5, 2]
 
 function applySpeed() {
   document.getAnimations().forEach(anim => { anim.playbackRate = speedRate })
+  window.dispatchEvent(new CustomEvent('motioncatalog:speed', { detail: { speed: speedRate } }))
 }
 
 speedBtn.addEventListener('click', () => {
@@ -1151,6 +1517,7 @@ function fillSpecs() {
     const specEl = card.querySelector('.card-spec')
     const stage = card.querySelector('.preview-stage')
     if (!specEl || !stage) return
+    if (specEl.dataset.fixedSpec === 'true') return
     const anims = stage.getAnimations({ subtree: true })
     if (!anims.length) {
       specEl.textContent = stage.querySelector('[class*="hvr-"]') ? ':hover / :focus' : ''
@@ -1182,25 +1549,35 @@ function fillSpecs() {
 /* ── Render Catalog ─────────────────────────────────────────── */
 function renderCatalog() {
   const query = currentQuery()
-  const filtered = motions.filter(motion =>
+  const catalog = activeMotions()
+  const filtered = catalog.filter(motion =>
     matchesTarget(motion) && matchesCategory(motion) && matchesSearch(motion, query)
   )
 
-  resultCount.innerHTML = `<strong>${filtered.length}</strong> / ${motions.length}`
+  resultCount.innerHTML = `<strong>${filtered.length}</strong> / ${catalog.length}`
 
   if (!filtered.length) {
     grid.innerHTML = ''
     emptyState.removeAttribute('hidden')
+    afterAnimationsStart()
     return
   }
   emptyState.setAttribute('hidden', '')
 
   grid.innerHTML = filtered.map((motion, index) => {
     const delay = Math.min(index * 14, 220)
-    const preview = shouldAnimate()
+    const isThree = motion.dimension === '3d'
+    const preview = isThree || shouldAnimate()
       ? renderPreview(motion)
       : `<div class="preview-stage preview-stage--paused" aria-label="モーションプレビュー停止中"></div>`
-    return `<article class="motion-card" style="--card-delay: ${delay}ms" data-id="${motion.id}" data-category="${motion.category}">
+    return `<article
+      class="motion-card${isThree ? ' motion-card--3d' : ''}"
+      style="--card-delay: ${delay}ms"
+      data-id="${motion.id}"
+      data-key="${motion.key || ''}"
+      data-dimension="${isThree ? '3d' : '2d'}"
+      data-category="${motion.category}"
+    >
       <header class="card-top">
         <span class="card-num">${String(motion.id).padStart(3, '0')}</span>
         <span class="card-cat">${motion.category}</span>
@@ -1231,13 +1608,22 @@ function renderCatalog() {
         ><span class="request-text__label">指示文</span>${motion.request}</button>
       </div>
       <footer class="card-foot">
-        <code class="card-spec" title="実測 duration / easing / iterations"></code>
-        <button class="copy-css" type="button" data-css="${motion.copyClasses || motion.className}" title="このモーションのCSSをコピー">
+        <code
+          class="card-spec"
+          title="${isThree ? 'duration / easing / iterations' : '実測 duration / easing / iterations'}"
+          ${isThree ? 'data-fixed-spec="true"' : ''}
+        >${isThree ? motion.spec : ''}</code>
+        <button
+          class="copy-css"
+          type="button"
+          ${isThree ? `data-three-key="${motion.key}"` : `data-css="${motion.copyClasses || motion.className}"`}
+          title="${isThree ? 'Three.jsコードをコピー' : 'このモーションのCSSをコピー'}"
+        >
           <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true">
             <rect x="4.5" y="4.5" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
             <path d="M9.5 4.5v-2a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2" stroke="currentColor" stroke-width="1.4"/>
           </svg>
-          .${motion.className}
+          ${isThree ? 'THREE.JS' : `.${motion.className}`}
         </button>
       </footer>
     </article>`
@@ -1254,6 +1640,13 @@ function renderCatalog() {
 function afterAnimationsStart() {
   if (speedRate !== 1) applySpeed()
   fillSpecs()
+  window.dispatchEvent(new CustomEvent('motioncatalog:render', {
+    detail: {
+      dimension: activeDimension,
+      animate: shouldAnimate(),
+      speed: speedRate,
+    },
+  }))
 }
 
 function refresh() {
@@ -1272,6 +1665,12 @@ grid.addEventListener('click', e => {
   }
   const cssBtn = e.target.closest('.copy-css')
   if (cssBtn) {
+    if (cssBtn.dataset.threeKey) {
+      const motion = threeMotions.find(item => item.key === cssBtn.dataset.threeKey)
+      if (motion) copyText(motion.code, 'Three.jsコードをコピーしました ✓')
+      else showToast('コードを見つけられませんでした')
+      return
+    }
     const css = extractMotionCSS(cssBtn.dataset.css)
     if (css) copyText(css, 'CSSをコピーしました ✓')
     else showToast('CSSを抽出できませんでした')
@@ -1280,6 +1679,12 @@ grid.addEventListener('click', e => {
   const replayBtn = e.target.closest('[data-replay]')
   if (replayBtn) {
     const card = replayBtn.closest('.motion-card')
+    if (card.dataset.dimension === '3d') {
+      window.dispatchEvent(new CustomEvent('motioncatalog:replay', {
+        detail: { key: card.dataset.key },
+      }))
+      return
+    }
     const motion = motions.find(m => m.id === Number(card.dataset.id))
     const stage = card.querySelector('.preview-stage')
     if (motion && stage && shouldAnimate()) {
@@ -1361,5 +1766,6 @@ setInterval(() => {
 
 /* ── Init ───────────────────────────────────────────────────── */
 readStateFromURL()
+syncDimensionUI()
 searchClear.hidden = !searchInput.value
 refresh()
