@@ -1,0 +1,21 @@
+{
+  "date": "2026-07-24",
+  "font_stack": "Space Grotesk + IBM Plex Mono via Google Fonts",
+  "palette": "warm paper, ink, orange signal via CSS custom properties",
+  "motion": "CSS keyframes plus Web Animations API; no framework motion library",
+  "spacing": "existing compact catalog scale; new feature uses a 4pt named scale",
+  "framework": "vanilla HTML, CSS, and JavaScript",
+  "preserved": [
+    "font stack",
+    "light and dark palettes",
+    "existing 2D catalog structure",
+    "existing uncommitted 600-pattern expansion"
+  ],
+  "introduced": [
+    "Component Playground macrostructure stamp",
+    "2D/3D dimension gateway",
+    "Cobalt signal for 3D",
+    "shared WebGL renderer",
+    "responsive and interaction state tokens"
+  ]
+}

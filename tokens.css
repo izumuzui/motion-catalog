@@ -1,0 +1,71 @@
+/* Hallmark · tokens: Motion Catalog · paper/orange + Cobalt 3D signal */
+:root {
+  --color-three-accent: oklch(58% 0.20 256);
+  --color-three-accent-strong: oklch(48% 0.19 256);
+  --color-three-accent-soft: oklch(93% 0.035 256);
+  --color-three-accent-ink: oklch(98.5% 0.004 250);
+  --color-three-paper: oklch(98.5% 0.004 250);
+  --color-three-stage: oklch(18% 0.022 258);
+  --color-three-stage-ink: oklch(88% 0.035 250);
+  --color-three-rule: oklch(82% 0.018 256);
+  --color-three-error: oklch(58% 0.20 25);
+  --color-three-success: oklch(54% 0.14 158);
+  --color-focus: oklch(57% 0.22 256);
+  --color-focus-offset: oklch(98.5% 0.004 250);
+  --color-webgl-cobalt: oklch(65% 0.18 256);
+  --color-webgl-cyan: oklch(84% 0.13 210);
+  --color-webgl-violet: oklch(70% 0.16 292);
+  --color-webgl-warm: oklch(79% 0.15 67);
+  --color-webgl-hot: oklch(69% 0.20 12);
+  --color-webgl-mint: oklch(82% 0.13 165);
+  --color-webgl-paper: oklch(94% 0.025 250);
+  --color-webgl-graphite: oklch(18% 0.025 258);
+  --color-webgl-muted: oklch(54% 0.04 258);
+  --color-webgl-shadow: oklch(8% 0.012 258);
+
+  --font-display: var(--sans);
+  --font-body: var(--sans);
+  --font-mono: var(--mono);
+
+  --space-3xs: 0.125rem;
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+
+  --text-xs: 0.6875rem;
+  --text-sm: 0.8125rem;
+  --text-base: 1rem;
+  --text-md: 1.25rem;
+  --text-lg: 1.5625rem;
+  --text-xl: 1.953rem;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms;
+  --dur-short: 220ms;
+  --dur-long: 420ms;
+
+  --rule-thin: 1px;
+  --radius-control: 6px;
+  --radius-panel: 10px;
+  --z-webgl: 1;
+}
+
+[data-theme="dark"] {
+  --color-three-accent: oklch(70% 0.17 256);
+  --color-three-accent-strong: oklch(79% 0.13 256);
+  --color-three-accent-soft: oklch(25% 0.045 256);
+  --color-three-accent-ink: oklch(16% 0.012 258);
+  --color-three-paper: oklch(16% 0.012 258);
+  --color-three-stage: oklch(12.5% 0.018 258);
+  --color-three-stage-ink: oklch(91% 0.026 250);
+  --color-three-rule: oklch(34% 0.025 256);
+  --color-focus: oklch(76% 0.16 256);
+  --color-focus-offset: oklch(13% 0.012 258);
+}

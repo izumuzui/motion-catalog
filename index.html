@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="UIモーションの語彙集。500種類の動きを名前・用途・指示文・ライブプレビュー・コピー可能なCSSつきで一覧できるカタログ。" />
+    <meta name="description" content="UIモーションの語彙集。2D 600種類とThree.js製3D 50種類を、名前・用途・指示文・ライブプレビュー・コピー可能なコードつきで一覧できるカタログ。" />
     <meta property="og:title" content="Motion Catalog — UIモーション語彙集" />
-    <meta property="og:description" content="500種類のUIモーションを、名前・用途・指示文・CSSつきで掲載。" />
+    <meta property="og:description" content="2D 600種類とThree.js製3D 50種類のUIモーションを、名前・用途・指示文・コードつきで掲載。" />
     <meta property="og:type" content="website" />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23181512'/%3E%3Ccircle cx='12' cy='16' r='6' fill='%23ff4f18'/%3E%3Ccircle cx='21' cy='16' r='6' fill='none' stroke='%23faf8f5' stroke-width='2'/%3E%3C/svg%3E" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -21,6 +21,13 @@
     <link rel="stylesheet" href="./vendor/hover.css" />
     <link rel="stylesheet" href="./vendor/spinkit.css" />
     <link rel="stylesheet" href="./vendor/csshake.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.184.0/build/three.module.js"
+        }
+      }
+    </script>
     <script>
       // Apply saved theme before first paint to avoid a flash
       try {
@@ -41,7 +48,7 @@
           </svg>
           <span>Motion<em>Catalog</em></span>
         </a>
-        <p class="site-header__tagline">UIモーション語彙集 — 動きの名前・用途・指示文・CSS</p>
+        <p class="site-header__tagline">2D CSS + 3D WebGL — 動きの名前・用途・指示文・コード</p>
         <div class="site-header__actions">
           <span class="stat-badge" id="resultCount" aria-live="polite"></span>
           <button class="tool-btn" id="speedToggle" type="button" aria-label="再生速度 1倍" title="再生速度を切り替える">1×</button>
@@ -75,6 +82,43 @@
         <button type="button" id="enableMotion">プレビューを表示する</button>
       </p>
     </div>
+
+    <section class="dimension-gateway" aria-labelledby="dimensionTitle">
+      <div class="dimension-gateway__inner">
+        <div class="dimension-gateway__copy">
+          <p class="dimension-gateway__index" id="dimensionIndex">CATALOG / 2D</p>
+          <h1 id="dimensionTitle">2D UI Motion</h1>
+          <p id="dimensionDescription">CSSで扱えるUIモーションを、用途と実装コードから探せます。</p>
+        </div>
+        <div class="dimension-tabs" role="tablist" aria-label="カタログの次元を選ぶ">
+          <button
+            class="dimension-tab"
+            id="dimension2d"
+            type="button"
+            role="tab"
+            aria-selected="true"
+            aria-controls="catalogGrid"
+            data-dimension="2d"
+          >
+            <span class="dimension-tab__mark" aria-hidden="true">2D</span>
+            <span class="dimension-tab__text"><strong>CSS Motion</strong><small>600 patterns</small></span>
+          </button>
+          <button
+            class="dimension-tab"
+            id="dimension3d"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="catalogGrid"
+            data-dimension="3d"
+            tabindex="-1"
+          >
+            <span class="dimension-tab__mark dimension-tab__mark--3d" aria-hidden="true">3D</span>
+            <span class="dimension-tab__text"><strong>Three.js Lab</strong><small>50 WebGL scenes</small></span>
+          </button>
+        </div>
+      </div>
+    </section>
 
     <main class="catalog-layout">
       <div class="toolbar" aria-label="絞り込み">
@@ -122,14 +166,14 @@
       <div class="site-footer__inner">
         <div>
           <p class="site-footer__title">Motion Catalog</p>
-          <p>UIモーションの名前・用途・指示文・CSSを一覧できるオープンソースのリファレンス。カードの指示文をクリックするとコピーできます。</p>
+          <p>UIモーションの名前・用途・指示文・実装コードを一覧できるオープンソースのリファレンス。カードの指示文をクリックするとコピーできます。</p>
         </div>
         <div>
           <h3>使い方</h3>
           <ol>
             <li>対象コンポーネントと種類で絞り込む</li>
             <li>プレビューで動きを確認する（カード右上で再生し直し）</li>
-            <li>指示文または <code>.class</code> ボタンでCSSをコピーする</li>
+            <li>指示文または <code>.class / THREE.JS</code> ボタンで実装コードをコピーする</li>
           </ol>
         </div>
       </div>
@@ -138,5 +182,6 @@
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script src="./app.js"></script>
+    <script type="module" src="./three-catalog.js"></script>
   </body>
 </html>

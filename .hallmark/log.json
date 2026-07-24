@@ -1,0 +1,12 @@
+[
+  {
+    "date": "2026-07-24",
+    "macrostructure": "Component Playground",
+    "theme": "paper/Cobalt",
+    "theme_axes": "light / grotesk-sans / cool",
+    "enrichment": "interactive WebGL scenes",
+    "nav": "N9 preserved",
+    "footer": "existing preserved",
+    "brief": "Split 2D and 3D entrances and add 50 Three.js motion examples"
+  }
+]
